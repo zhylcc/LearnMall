@@ -18,6 +18,7 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
+<!--            通用mapper-->
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>2.0.4</version>

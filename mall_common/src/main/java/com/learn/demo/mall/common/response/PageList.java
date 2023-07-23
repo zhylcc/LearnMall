@@ -1,5 +1,6 @@
 package com.learn.demo.mall.common.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
@@ -9,9 +10,10 @@ import java.util.List;
  * @author zh_cr
  */
 @Data
+@AllArgsConstructor
 public class PageList<T> {
 
-    private Integer total;
+    private Long total;
 
     private List<T> items;
 }

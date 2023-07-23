@@ -12,7 +12,17 @@ spring:
   application:
     name: goods
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:33060/mall_goods?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: 123456
+
+# 打印mybatis执行的sql语句
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 雪花算法工具类配置
+snowflake:
+  datacenter-id: 0
+  worker-id: 0

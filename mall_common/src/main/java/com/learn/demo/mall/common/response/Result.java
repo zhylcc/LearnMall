@@ -1,6 +1,5 @@
 package com.learn.demo.mall.common.response;
 
-import com.learn.demo.mall.common.enums.StatusCodeEnum;
 import lombok.*;
 
 /**
@@ -10,7 +9,6 @@ import lombok.*;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 public class Result<T> {
 
     @NonNull
@@ -22,18 +20,15 @@ public class Result<T> {
     private T data;
 
     public static <T> Result<T> success() {
-        return new Result<>(StatusCodeEnum.SUCCESS.getCode(), StatusCodeEnum.SUCCESS.getMessage());
+        return new Result<>(0, "成功");
     }
 
     public static <T> Result<T> success(T data) {
-        return new Result<>(StatusCodeEnum.SUCCESS.getCode(), StatusCodeEnum.SUCCESS.getMessage(), data);
+        return new Result<>(0, "成功", data);
     }
 
-    public static <T> Result<T> fail() {
-        return new Result<>(StatusCodeEnum.UNKNOWN_ERROR.getCode(), StatusCodeEnum.UNKNOWN_ERROR.getMessage());
+    public static <T> Result<T> fail(Integer code, String message) {
+        return new Result<>(code, message);
     }
 
-    public static <T> Result<T> fail(Integer errorCode, String message) {
-        return new Result<>(errorCode, message);
-    }
 }

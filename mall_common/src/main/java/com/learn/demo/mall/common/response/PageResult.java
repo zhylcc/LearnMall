@@ -2,6 +2,8 @@ package com.learn.demo.mall.common.response;
 
 import lombok.*;
 
+import java.util.List;
+
 /**
  * 分页响应结果
  * @author zh_cr
@@ -9,7 +11,6 @@ import lombok.*;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
 public class PageResult<T> {
 
     /**
@@ -28,4 +29,10 @@ public class PageResult<T> {
      * 分页数据
      */
     private PageList<T> data;
+
+
+    public static <T> PageResult<T> success(Long total, List<T> items) {
+        return new PageResult<>(0, "成功", new PageList<>(total, items));
+    }
+
 }

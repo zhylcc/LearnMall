@@ -2,6 +2,8 @@ package com.learn.demo.mall.goods.pojo;
 
 
 import lombok.Data;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -18,6 +20,7 @@ public class BrandPO {
 	 * 品牌id
 	 */
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	/**

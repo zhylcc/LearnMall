@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>mall_service_goods</module>
+        <module>mall_service_file</module>
     </modules>
 
     <dependencies>

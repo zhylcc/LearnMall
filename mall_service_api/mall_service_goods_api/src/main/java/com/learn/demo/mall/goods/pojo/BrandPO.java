@@ -1,7 +1,11 @@
 package com.learn.demo.mall.goods.pojo;
 
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,7 +16,10 @@ import javax.persistence.Table;
  *
  * @author zh_cr
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "tb_brand")
 public class BrandPO {
 

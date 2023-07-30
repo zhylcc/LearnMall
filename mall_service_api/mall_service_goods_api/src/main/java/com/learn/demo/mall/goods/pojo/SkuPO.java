@@ -1,7 +1,10 @@
 package com.learn.demo.mall.goods.pojo;
 
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -11,7 +14,10 @@ import java.time.LocalDateTime;
  *
  * @author zh_cr
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "tb_sku")
 public class SkuPO {
 

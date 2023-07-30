@@ -6,7 +6,8 @@ import lombok.*;
  * 响应结果
  * @author zh_cr
  */
-@Data
+@Getter
+@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 public class Result<T> {
@@ -30,5 +31,4 @@ public class Result<T> {
     public static <T> Result<T> fail(Integer code, String message) {
         return new Result<>(code, message);
     }
-
 }

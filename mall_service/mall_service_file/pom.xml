@@ -11,12 +11,4 @@
 
     <artifactId>mall_service_file</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-        </dependency>
-    </dependencies>
-
-
 </project>

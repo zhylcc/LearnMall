@@ -1,14 +1,14 @@
 package com.learn.demo.mall.common.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 /**
  * 分页查询请求参数封装
  * @author zh_cr
  */
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
 @AllArgsConstructor
 public class PageExampleReq<T> {
 

@@ -8,9 +8,10 @@ import java.util.List;
  * 分页响应结果
  * @author zh_cr
  */
-@Data
-@RequiredArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class PageResult<T> {
 
     /**
@@ -33,6 +34,10 @@ public class PageResult<T> {
 
     public static <T> PageResult<T> success(Long total, List<T> items) {
         return new PageResult<>(0, "成功", new PageList<>(total, items));
+    }
+
+    public static <T> PageResult<T> fail(Integer code, String message) {
+        return new PageResult<>(code, message);
     }
 
 }

@@ -1,20 +1,15 @@
-package com.learn.demo.mall.goods.util;
+package com.learn.demo.mall.common.util;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
 
 /**
  * 雪花算法工具类
  * @author zh_cr
  */
-@Data
-@NoArgsConstructor
 @Component
 @ConfigurationProperties(prefix = "snowflake")
-public class SnowflakeIdWorker {
+public class SnowflakeIdUtils {
     // 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
     private final static long TW_EPOCH = 1288834974657L;
     // 机器标识位数
@@ -80,4 +75,17 @@ public class SnowflakeIdWorker {
         return System.currentTimeMillis();
     }
 
+    public void setWorkerId(long workerId) {
+        if (workerId > MAX_WORKER_ID || workerId < 0) {
+            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", MAX_WORKER_ID));
+        }
+        this.workerId = workerId;
+    }
+
+    public void setDatacenterId(long datacenterId) {
+        if (datacenterId > MAX_DATACENTER_ID || datacenterId < 0) {
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", MAX_DATACENTER_ID));
+        }
+        this.datacenterId = datacenterId;
+    }
 }

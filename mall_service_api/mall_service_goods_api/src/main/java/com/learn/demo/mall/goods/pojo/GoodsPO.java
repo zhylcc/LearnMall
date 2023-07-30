@@ -1,23 +1,22 @@
 package com.learn.demo.mall.goods.pojo;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 /**
- * 商品实体
  * @author zh_cr
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class GoodsPO {
 
-    /**
-     * spu
-     */
     private SpuPO spu;
 
-    /**
-     * sku列表
-     */
     private List<SkuPO> skuList;
 }

@@ -2,17 +2,16 @@ package com.learn.demo.mall.goods.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.learn.demo.mall.common.util.SnowflakeIdUtils;
 import com.learn.demo.mall.goods.dao.*;
 import com.learn.demo.mall.goods.enums.SpuStatusEnum;
 import com.learn.demo.mall.goods.pojo.*;
-import com.learn.demo.mall.goods.util.SnowflakeIdWorker;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +40,11 @@ public class SpuService {
     private SkuMapper skuMapper;
 
     @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
+    private SnowflakeIdUtils snowflakeIdUtils;
 
     private void saveSpuFromGoods(GoodsPO goods) {
         SpuPO spu = goods.getSpu();
-        spu.setId(String.valueOf(snowflakeIdWorker.nextId()));
+        spu.setId(String.valueOf(snowflakeIdUtils.nextId()));
         spu.setIsDelete(SpuStatusEnum.NOT_DELETE.getValue());
         spu.setIsMarketable(SpuStatusEnum.NOT_MARKETABLE.getValue());
         spu.setStatus(SpuStatusEnum.NOT_CHECKED.getValue());
@@ -73,7 +72,7 @@ public class SpuService {
             return;
         }
         skus.forEach(sku -> {
-            sku.setId(String.valueOf(snowflakeIdWorker.nextId()));
+            sku.setId(String.valueOf(snowflakeIdUtils.nextId()));
             if (StringUtils.isBlank(sku.getSpec())) {
                 sku.setSpec("{}");
             }
@@ -98,7 +97,7 @@ public class SpuService {
     }
 
     @Transactional
-    public String saveGoods(@NotNull GoodsPO goods) {
+    public String saveGoods(GoodsPO goods) {
         // 保存spu
         saveSpuFromGoods(goods);
         // 关联分类和品牌
@@ -110,7 +109,7 @@ public class SpuService {
 
 
     @Transactional
-    public void deleteGoodsById(@NotNull String id) {
+    public void deleteGoodsById(String id) {
         SpuPO spu = spuMapper.selectByPrimaryKey(id);
         // （逻辑）删除前判断商品是否存在且处于下架状态
         if (Objects.isNull(spu) || Objects.equals(spu.getIsMarketable(), SpuStatusEnum.MARKETABLE.getValue())) {

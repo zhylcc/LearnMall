@@ -1,7 +1,8 @@
 package com.learn.demo.mall.common.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -9,7 +10,8 @@ import java.util.List;
  * 分页数据
  * @author zh_cr
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class PageList<T> {
 

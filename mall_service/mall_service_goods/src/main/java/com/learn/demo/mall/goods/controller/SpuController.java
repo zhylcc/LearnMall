@@ -1,8 +1,8 @@
 package com.learn.demo.mall.goods.controller;
 
+import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.response.Result;
 import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
-import com.learn.demo.mall.goods.exception.GoodsException;
 import com.learn.demo.mall.goods.pojo.GoodsPO;
 import com.learn.demo.mall.goods.service.SpuService;
 import org.apache.commons.lang.StringUtils;
@@ -27,18 +27,18 @@ public class SpuController {
     @PostMapping()
     public Result<String> saveGoods(@RequestBody GoodsPO goods) {
         if (!(Objects.nonNull(goods.getSpu()) && StringUtils.isNotBlank(goods.getSpu().getName()))) {
-            throw new GoodsException("商品SPU名不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
+            throw new BaseBizException("商品SPU名不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
         }
         if (!CollectionUtils.isEmpty(goods.getSkuList())) {
             goods.getSkuList().forEach(sku -> {
                 if (StringUtils.isBlank(sku.getSn())) {
-                    throw new GoodsException("商品条码不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
+                    throw new BaseBizException("商品条码不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
                 }
                 if (Objects.isNull(sku.getNum())) {
-                    throw new GoodsException("商品库存不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
+                    throw new BaseBizException("商品库存不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
                 }
                 if (Objects.isNull(sku.getPrice())) {
-                    throw new GoodsException("商品价格不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
+                    throw new BaseBizException("商品价格不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
                 }
             });
         }
@@ -46,7 +46,7 @@ public class SpuController {
     }
 
     @DeleteMapping("/{id}")
-    public Result<Object> deleteGoodsById(@PathVariable String id) {
+    public Result<Void> deleteGoodsById(@PathVariable String id) {
         spuService.deleteGoodsById(id);
         return Result.success();
     }

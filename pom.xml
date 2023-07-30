@@ -10,9 +10,9 @@
     <packaging>pom</packaging>
     <modules>
         <module>mall_common</module>
-        <module>mall_eureka</module>
+        <module>mall_common_sdk</module>
+        <module>mall_registry</module>
         <module>mall_service</module>
-        <module>mall_common_db</module>
         <module>mall_service_api</module>
     </modules>
 
@@ -20,6 +20,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <springboot.version>2.1.4.RELEASE</springboot.version>
         <skipTests>true</skipTests>
     </properties>
 
@@ -28,6 +29,19 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.4.RELEASE</version>
     </parent>
+
+    <dependencies>
+<!--        热部署使用-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+<!--        解析前缀-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>
@@ -40,5 +54,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
 </project>

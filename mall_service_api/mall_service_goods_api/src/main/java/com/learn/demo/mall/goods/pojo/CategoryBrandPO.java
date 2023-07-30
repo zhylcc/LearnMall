@@ -1,22 +1,26 @@
 package com.learn.demo.mall.goods.pojo;
 
 
-import lombok.Data;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.Table;
 
 /**
  *
  * @author zh_cr
  */
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "tb_category_brand")
 public class CategoryBrandPO {
 
 	/**
 	 * 分类ID
 	 */
-	@Id
 	private Integer categoryId;
 
 	/**

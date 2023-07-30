@@ -3,10 +3,10 @@ package com.learn.demo.mall.goods.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
+import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.request.PageExampleReq;
 import com.learn.demo.mall.goods.dao.BrandMapper;
 import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
-import com.learn.demo.mall.goods.exception.GoodsException;
 import com.learn.demo.mall.goods.pojo.BrandPO;
 import com.learn.demo.mall.goods.request.BrandExampleReq;
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,7 +43,7 @@ public class BrandService {
         return example;
     }
 
-    public BrandPO queryBrandByName(@NotNull String name) {
+    public BrandPO queryBrandByName(String name) {
         Example example = new Example(BrandPO.class);
         Example.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(name)) {
@@ -53,22 +52,22 @@ public class BrandService {
         return brandMapper.selectOneByExample(example);
     }
 
-    public BrandPO queryBrandById(@NotNull Integer id) {
+    public BrandPO queryBrandById(Integer id) {
         return brandMapper.selectByPrimaryKey(id);
     }
 
-    public List<BrandPO> queryBrandsByExample(@NotNull BrandExampleReq req) {
+    public List<BrandPO> queryBrandsByExample(BrandExampleReq req) {
         Example example = createExample(req);
         return brandMapper.selectByExample(example);
     }
 
-    public Page<BrandPO> queryPageBrandsByExample(@NotNull PageExampleReq<BrandExampleReq> req) {
+    public Page<BrandPO> queryPageBrandsByExample(PageExampleReq<BrandExampleReq> req) {
         PageHelper.startPage(req.getCurrentPage(), req.getPageSize());
         Example example = createExample(req.getExample());
         return (Page<BrandPO>) brandMapper.selectByExample(example);
     }
 
-    public List<BrandPO> queryBrandsByIds(@NotNull List<Integer> brandIds) {
+    public List<BrandPO> queryBrandsByIds(List<Integer> brandIds) {
         if (CollectionUtils.isEmpty(brandIds)) {
             return Lists.newArrayList();
         }
@@ -76,25 +75,25 @@ public class BrandService {
     }
 
     @Transactional
-    public Integer saveBrand(@NotNull BrandPO brand) {
+    public Integer saveBrand(BrandPO brand) {
         brand.setId(null);
         if (Objects.nonNull(queryBrandByName(brand.getName()))) {
-            throw new GoodsException("品牌名重复", GoodsErrorCodeEnum.SQL_EXCEPTION);
+            throw new BaseBizException("品牌名重复", GoodsErrorCodeEnum.BIZ_BRAND_WARNING);
         }
         brandMapper.insertSelective(brand);
         return brand.getId();
     }
 
     @Transactional
-    public void deleteBrandById(@NotNull Integer id) {
+    public void deleteBrandById(Integer id) {
         brandMapper.deleteByPrimaryKey(id);
     }
 
     @Transactional
-    public void updateBrand(@NotNull BrandPO brand) {
+    public void updateBrand(BrandPO brand) {
         BrandPO oldBrand = queryBrandByName(brand.getName());
         if (Objects.nonNull(oldBrand) && !oldBrand.getId().equals(brand.getId())) {
-            throw new GoodsException("品牌名重复", GoodsErrorCodeEnum.SQL_EXCEPTION);
+            throw new BaseBizException("品牌名重复", GoodsErrorCodeEnum.BIZ_BRAND_WARNING);
         }
         brandMapper.updateByPrimaryKey(brand);
     }

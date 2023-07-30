@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,24 +42,24 @@ public class CategoryService {
         return example;
     }
 
-    public CategoryPO queryCategoryById(@NotNull Integer id) {
+    public CategoryPO queryCategoryById(Integer id) {
         return categoryMapper.selectByPrimaryKey(id);
     }
 
-    public Page<CategoryPO> queryPageBrandsByExample(@NotNull PageExampleReq<CategoryExampleReq> req) {
+    public Page<CategoryPO> queryPageBrandsByExample(PageExampleReq<CategoryExampleReq> req) {
         PageHelper.startPage(req.getCurrentPage(), req.getPageSize());
         Example example = createExample(req.getExample());
         return (Page<CategoryPO>) categoryMapper.selectByExample(example);
     }
 
-    public List<Integer> queryBrandIdsByCategoryName(@NotNull String categoryName) {
+    public List<Integer> queryBrandIdsByCategoryName(String categoryName) {
         if (StringUtils.isBlank(categoryName)) {
             return Lists.newArrayList();
         }
         return categoryMapper.selectBrandIdsByCategoryName(categoryName);
     }
 
-    public List<Integer> queryTemplateIdsByCategoryName(@NotNull String categoryName) {
+    public List<Integer> queryTemplateIdsByCategoryName(String categoryName) {
         if (StringUtils.isBlank(categoryName)) {
             return Lists.newArrayList();
         }

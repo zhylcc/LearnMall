@@ -5,28 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.learn.demo</groupId>
-        <artifactId>LearnMall</artifactId>
+        <artifactId>mall_service</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mall_service</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>mall_service_goods</module>
-        <module>mall_service_file</module>
-        <module>mall_service_system</module>
-    </modules>
+    <artifactId>mall_service_system</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.learn.demo</groupId>
-            <artifactId>mall_common_sdk</artifactId>
+            <artifactId>mall_service_system_api</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
-<!--        eureka客户端-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
     </dependencies>
 

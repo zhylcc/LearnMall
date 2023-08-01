@@ -1,0 +1,58 @@
+server:
+  port: 80
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6868/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      globalcors:  # 全局跨域请求配置
+        cors-configurations:
+          '[/**]':  # 所有请求
+            allowedOrigins: "*"  # 所有域
+            allowedMethods:  # 所有方法
+              - GET
+              - POST
+              - PUT
+              - DELETE
+      loadbalancer:
+        use404: true  # 无法找到服务实例时由404替代默认的503
+      routes:   # 路由
+        - id: goods
+          uri: lb://goods  # 负载均衡
+          predicates:
+            - Path=/goods/**
+          filters:
+            - name: RequestRateLimiter
+              # 指定每秒最多2个请求
+              args:
+                key-resolver: "#{@ipKeyResolver}"
+                redis-rate-limiter.replenishRate: 1  # 令牌桶每秒填充平均速率
+                redis-rate-limiter.burstCapacity: 2  # 令牌桶总容量
+        - id: file
+          uri: lb://file
+          predicates:
+            - Path=/file/**
+        - id: system
+          uri: lb://system
+          predicates:
+            - Path=/system/**
+  redis:
+    host: localhost
+
+jwt:
+  secretKey: mall
+
+custom-filter:
+  black-ips:
+    - 192.168.200.1
+  login-urls:
+    - /system/admin/login
+  token-header-name: token

@@ -2,7 +2,7 @@ package com.learn.demo.mall.goods.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.learn.demo.mall.common.util.SnowflakeIdUtils;
+import com.learn.demo.mall.common.util.SnowflakeIdUtil;
 import com.learn.demo.mall.goods.dao.*;
 import com.learn.demo.mall.goods.enums.SpuStatusEnum;
 import com.learn.demo.mall.goods.pojo.*;
@@ -40,11 +40,11 @@ public class SpuService {
     private SkuMapper skuMapper;
 
     @Autowired
-    private SnowflakeIdUtils snowflakeIdUtils;
+    private SnowflakeIdUtil snowflakeIdUtil;
 
     private void saveSpuFromGoods(GoodsPO goods) {
         SpuPO spu = goods.getSpu();
-        spu.setId(String.valueOf(snowflakeIdUtils.nextId()));
+        spu.setId(String.valueOf(snowflakeIdUtil.nextId()));
         spu.setIsDelete(SpuStatusEnum.NOT_DELETE.getValue());
         spu.setIsMarketable(SpuStatusEnum.NOT_MARKETABLE.getValue());
         spu.setStatus(SpuStatusEnum.NOT_CHECKED.getValue());
@@ -72,7 +72,7 @@ public class SpuService {
             return;
         }
         skus.forEach(sku -> {
-            sku.setId(String.valueOf(snowflakeIdUtils.nextId()));
+            sku.setId(String.valueOf(snowflakeIdUtil.nextId()));
             if (StringUtils.isBlank(sku.getSpec())) {
                 sku.setSpec("{}");
             }

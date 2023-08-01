@@ -12,6 +12,7 @@
         <module>mall_common</module>
         <module>mall_common_sdk</module>
         <module>mall_registry</module>
+        <module>mall_gateway</module>
         <module>mall_service</module>
         <module>mall_service_api</module>
     </modules>

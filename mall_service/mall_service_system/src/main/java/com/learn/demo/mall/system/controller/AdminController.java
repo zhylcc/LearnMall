@@ -22,7 +22,7 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @PostMapping("/")
+    @PostMapping
     public Result<Integer> saveAdmin(@RequestBody AdminPO admin) {
         if (StringUtils.isBlank(admin.getLoginName())) {
             throw new BaseBizException("用户名不能为空", SystemErrorCodeEnum.ARGUMENT_ILLEGAL);

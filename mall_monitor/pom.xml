@@ -9,18 +9,19 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mall_service</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>mall_service_goods</module>
-        <module>mall_service_system</module>
-    </modules>
+    <artifactId>mall_monitor</artifactId>
 
     <dependencies>
-<!--        eureka客户端-->
+<!--        canal-->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <groupId>com.xpand</groupId>
+            <artifactId>starter-canal</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+<!--        rabbitmq-->
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
         </dependency>
     </dependencies>
 

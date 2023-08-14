@@ -1,6 +1,7 @@
 package com.learn.demo.mall.goods.enums;
 
 /**
+ * 商品状态枚举
  * @author zh_cr
  */
 

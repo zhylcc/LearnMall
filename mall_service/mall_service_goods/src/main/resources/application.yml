@@ -11,23 +11,49 @@ eureka:
 spring:
   application:
     name: goods
+  devtools:
+    livereload:
+      port: 35731
   datasource:
     druid:  # 集成druid连接池
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:33060/mall_goods?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/mall_goods?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       username: root
       password: 123456
       initialSize: 5
       minIdle: 5
       maxActive: 20
       maxWait: 60000
+  main:
+    allow-bean-definition-overriding: true  # 允许覆盖注册，开启，否则ESSkuMapper可能编译报错
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      cluster-nodes: localhost:9300
+  rabbitmq:
+    host: localhost
 
 # 打印mybatis执行的sql语句
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+#fastdfs相关
+fdfs:
+  tracker-list:  # 可配置多个
+    - localhost:22122
+  web-server-url: http://localhost:8888/
 
 # 雪花算法工具类配置
 snowflake:
-  datacenter-id: 0
-  worker-id: 0
+  datacenterId: 0
+  workerId: 1
+
+# 自定义rabbitmq配置
+consumer:
+  spu:
+    queue:
+      importIndex: indexBatchImportQueue
+      deleteIndex: indexBatchDeleteQueue
+

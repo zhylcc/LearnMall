@@ -9,12 +9,9 @@ import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
 import com.learn.demo.mall.goods.pojo.BrandPO;
 import com.learn.demo.mall.goods.request.BrandExampleReq;
 import com.learn.demo.mall.goods.service.BrandService;
-import com.learn.demo.mall.goods.service.CategoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 品牌管理
@@ -28,20 +25,12 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
 
-    @Autowired
-    private CategoryService categoryService;
-
     @GetMapping("/{id}")
     public Result<BrandPO> queryBrandById(@PathVariable Integer id) {
         return Result.success(brandService.queryBrandById(id));
     }
 
-    @PostMapping("/search")
-    public Result<List<BrandPO>> queryBrandsByExample(@RequestBody BrandExampleReq req) {
-        return Result.success(brandService.queryBrandsByExample(req));
-    }
-
-    @PostMapping("/search/{page}/{size}")
+    @PostMapping("/{page}/{size}")
     public PageResult<BrandPO> queryPageBrandsByExample(@RequestBody BrandExampleReq req, @PathVariable Integer page, @PathVariable Integer size) {
         if (page <= 0) {
             throw new BaseBizException("页码参数必须大于0", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
@@ -53,7 +42,7 @@ public class BrandController {
         return PageResult.success(brands.getTotal(), brands.getResult());
     }
 
-    @PostMapping("/save")
+    @PostMapping
     public Result<Integer> saveBrand(@RequestBody BrandPO brand) {
         if (StringUtils.isBlank(brand.getName())) {
             throw new BaseBizException("品牌名称不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
@@ -62,12 +51,6 @@ public class BrandController {
             throw new BaseBizException("品牌首字母必须为A-Z", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
         }
         return Result.success(brandService.saveBrand(brand));
-    }
-
-    @DeleteMapping("/{id}")
-    public Result<Void> deleteBrandById(@PathVariable Integer id) {
-        brandService.deleteBrandById(id);
-        return Result.success();
     }
 
     @PutMapping("/{id}")
@@ -83,9 +66,9 @@ public class BrandController {
         return Result.success();
     }
 
-    @GetMapping("/category/{categoryName}")
-    public Result<List<BrandPO>> queryBrandsByCategoryName(@PathVariable String categoryName) {
-        List<Integer> brandIds = categoryService.queryBrandIdsByCategoryName(categoryName);
-        return Result.success(brandService.queryBrandsByIds(brandIds));
+    @DeleteMapping("/{id}")
+    public Result<Void> deleteBrandById(@PathVariable Integer id) {
+        brandService.deleteBrandById(id);
+        return Result.success();
     }
 }

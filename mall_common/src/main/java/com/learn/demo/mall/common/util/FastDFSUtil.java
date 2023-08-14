@@ -1,30 +1,24 @@
-package com.learn.demo.mall.file.service;
+package com.learn.demo.mall.common.util;
 
 import com.github.tobato.fastdfs.domain.conn.FdfsWebServer;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.domain.proto.storage.DownloadByteArray;
-import com.github.tobato.fastdfs.exception.FdfsUnsupportStorePathException;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import com.learn.demo.mall.common.exception.BaseBizException;
-import com.learn.demo.mall.file.enums.FileErrorCodeEnum;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 /**
  * FastDFS工具类
  * @author zh_cr
  */
-@Service
-public class FastDFSService {
+@Component
+public class FastDFSUtil {
 
     @Autowired
     private FastFileStorageClient storageClient;
@@ -37,7 +31,7 @@ public class FastDFSService {
      * @param file 文件对象
      * @return 文件访问地址
      */
-    public String uploadFile(MultipartFile file) throws IOException {
+    public String uploadFile(MultipartFile file) throws Exception {
         StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), FilenameUtils.getExtension(file.getOriginalFilename()),null);
         return getResAccessUrl(storePath);
     }
@@ -47,7 +41,7 @@ public class FastDFSService {
      * @param file 文件对象
      * @return 文件访问地址
      */
-    public String uploadFile(File file) throws IOException {
+    public String uploadFile(File file) throws FileNotFoundException {
         FileInputStream inputStream = new FileInputStream (file);
         StorePath storePath = storageClient.uploadFile(inputStream,file.length(), FilenameUtils.getExtension(file.getName()),null);
         return getResAccessUrl(storePath);
@@ -74,12 +68,8 @@ public class FastDFSService {
         if (StringUtils.isEmpty(fileName)) {
             return;
         }
-        try {
-            StorePath storePath = StorePath.parseFromUrl(getResAccessUrl(fileName));
-            storageClient.deleteFile(storePath.getGroup(), storePath.getPath());
-        } catch (FdfsUnsupportStorePathException e) {
-            throw new BaseBizException("FastDFS文件名不存在", FileErrorCodeEnum.ARGUMENT_ILLEGAL);
-        }
+        StorePath storePath = StorePath.parseFromUrl(getResAccessUrl(fileName));
+        storageClient.deleteFile(storePath.getGroup(), storePath.getPath());
     }
 
     /**
@@ -88,7 +78,7 @@ public class FastDFSService {
      * @param fileName 文件名（含后缀，group/xx/xx/xxx.x）
      * @return 文件字节
      */
-    public byte[] downloadFile(String fileName) throws IOException {
+    public byte[] downloadFile(String fileName) throws Exception {
         String group = fileName.substring(0, fileName.indexOf("/"));
         String path = fileName.substring(fileName.indexOf("/") + 1);
         DownloadByteArray downloadByteArray = new DownloadByteArray();

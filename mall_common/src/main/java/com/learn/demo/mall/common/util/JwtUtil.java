@@ -3,7 +3,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -16,14 +16,18 @@ import java.util.Date;
  * @author zh_cr
  */
 @Component
-@ConfigurationProperties(prefix = "jwt")
 public class JwtUtil {
 
     // 加密算法
-    private String signatureAlg = "HS256";
+    @Value("${jwt.signatureAlg:HS256}")
+    private String signatureAlg;
+
     //有效期，ms
-    private Long expire = (long) (1000 * 60 * 60);
+    @Value("${jwt.expire:300000}")
+    private Long expire;
+
     //设置秘钥明文
+    @Value("${jwt.secretKey:mallJwt}")
     private String secretKey;
 
     /**
@@ -56,18 +60,6 @@ public class JwtUtil {
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    public void setSignatureAlg(String signatureAlg) {
-        this.signatureAlg = signatureAlg;
-    }
-
-    public void setExpire(Long expire) {
-        this.expire = expire;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
     }
 
     private SecretKey generalKey() {

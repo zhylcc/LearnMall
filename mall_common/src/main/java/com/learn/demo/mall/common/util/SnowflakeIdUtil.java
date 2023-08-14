@@ -1,6 +1,6 @@
 package com.learn.demo.mall.common.util;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,10 +8,9 @@ import org.springframework.stereotype.Component;
  * @author zh_cr
  */
 @Component
-@ConfigurationProperties(prefix = "snowflake")
 public class SnowflakeIdUtil {
     // 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
-    private final static long TW_EPOCH = 1288834974657L;
+    private final static long TW_EPOCH = System.currentTimeMillis();
     // 机器标识位数
     private final static long WORKER_ID_BITS = 5L;
     // 数据中心标识位数
@@ -35,8 +34,10 @@ public class SnowflakeIdUtil {
     // 0，并发控制
     private long sequence = 0L;
 
+    @Value("${snowflake.workerId:0}")
     private long workerId;
 
+    @Value("${snowflake.datacenterId:0}")
     private long datacenterId;
 
     public synchronized long nextId() {
@@ -73,19 +74,5 @@ public class SnowflakeIdUtil {
 
     private long timeGen() {
         return System.currentTimeMillis();
-    }
-
-    public void setWorkerId(long workerId) {
-        if (workerId > MAX_WORKER_ID || workerId < 0) {
-            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", MAX_WORKER_ID));
-        }
-        this.workerId = workerId;
-    }
-
-    public void setDatacenterId(long datacenterId) {
-        if (datacenterId > MAX_DATACENTER_ID || datacenterId < 0) {
-            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", MAX_DATACENTER_ID));
-        }
-        this.datacenterId = datacenterId;
     }
 }

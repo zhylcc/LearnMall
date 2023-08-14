@@ -56,11 +56,6 @@ public class BrandService {
         return brandMapper.selectByPrimaryKey(id);
     }
 
-    public List<BrandPO> queryBrandsByExample(BrandExampleReq req) {
-        Example example = createExample(req);
-        return brandMapper.selectByExample(example);
-    }
-
     public Page<BrandPO> queryPageBrandsByExample(PageExampleReq<BrandExampleReq> req) {
         PageHelper.startPage(req.getCurrentPage(), req.getPageSize());
         Example example = createExample(req.getExample());

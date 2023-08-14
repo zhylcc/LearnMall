@@ -1,7 +1,7 @@
 package com.learn.demo.mall.gateway.filter;
 
 import com.learn.demo.mall.common.util.JwtUtil;
-import com.learn.demo.mall.gateway.config.CustomFilterConfig;
+import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +28,13 @@ import java.util.Objects;
 public class AuthorizedFilter implements GlobalFilter, Ordered {
 
     @Autowired
-    private CustomFilterConfig filterConfig;
-
-    @Autowired
     private JwtUtil jwtUtil;
+
+    @Value("${filter.auth.loginUrls:}")
+    private List<String> loginUrls;
+
+    @Value("${jwt.header:token}")
+    private String tokenHeaderName;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -39,17 +42,17 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
         ServerHttpResponse response = exchange.getResponse();
 
         // 放行登录请求
-        List<String> loginUrls = filterConfig.getLoginUrls();
         if (Objects.nonNull(loginUrls) && loginUrls.contains(request.getURI().getPath())) {
             return chain.filter(exchange);
         }
 
         // 获取并验证token
-        String token = request.getHeaders().getFirst(filterConfig.getTokenHeaderName());
+        String token = request.getHeaders().getFirst(tokenHeaderName);
 
         if (StringUtils.isNotBlank(token)) {
             try {
-                jwtUtil.parseToken(token);
+                Claims claims = jwtUtil.parseToken(token);
+                log.info("鉴权成功，token签发时间: " + claims.getIssuedAt());
                 // 鉴权成功
                 return chain.filter(exchange);
             } catch (Exception e) {

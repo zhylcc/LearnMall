@@ -10,11 +10,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>mall_common</module>
-        <module>mall_common_sdk</module>
         <module>mall_registry</module>
-        <module>mall_gateway</module>
-        <module>mall_service</module>
         <module>mall_service_api</module>
+        <module>mall_service</module>
+        <module>mall_gateway</module>
+        <module>mall_monitor</module>
     </modules>
 
     <properties>
@@ -37,10 +37,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
-<!--        解析前缀-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 

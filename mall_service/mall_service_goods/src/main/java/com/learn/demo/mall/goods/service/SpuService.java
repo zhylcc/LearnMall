@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import tk.mybatis.mapper.entity.Example;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -118,5 +119,12 @@ public class SpuService {
         spu.setIsDelete(SpuStatusEnum.DELETE.getValue());
         spu.setStatus(SpuStatusEnum.NOT_CHECKED.getValue());
         spuMapper.updateByPrimaryKeySelective(spu);
+    }
+
+    public List<SkuPO> selectSkusBySpuId(String spuId) {
+        Example example = new Example(SkuPO.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("spuId", spuId);
+        return skuMapper.selectByExample(example);
     }
 }

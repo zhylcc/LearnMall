@@ -11,6 +11,9 @@ eureka:
 spring:
   application:
     name: gateway
+  devtools:
+    livereload:
+      enabled: false
   cloud:
     gateway:
       globalcors:  # 全局跨域请求配置
@@ -36,10 +39,6 @@ spring:
                 key-resolver: "#{@ipKeyResolver}"
                 redis-rate-limiter.replenishRate: 1  # 令牌桶每秒填充平均速率
                 redis-rate-limiter.burstCapacity: 2  # 令牌桶总容量
-        - id: file
-          uri: lb://file
-          predicates:
-            - Path=/file/**
         - id: system
           uri: lb://system
           predicates:
@@ -48,11 +47,10 @@ spring:
     host: localhost
 
 jwt:
-  secretKey: mall
+  secretKey: mallSystem
+  header: token
 
-custom-filter:
-  black-ips:
-    - 192.168.200.1
-  login-urls:
-    - /system/admin/login
-  token-header-name: token
+filter:
+  blackList: 192.168.200.1,
+  auth:
+    loginUrls: /system/admin/login,

@@ -1,5 +1,5 @@
 server:
-  port: 9003
+  port: 9002
 
 eureka:
   client:
@@ -11,10 +11,13 @@ eureka:
 spring:
   application:
     name: system
+  devtools:
+    livereload:
+      port: 35732
   datasource:
     druid:  # 集成druid连接池
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:33060/mall_system?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/mall_system?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       username: root
       password: 123456
       initialSize: 5
@@ -23,15 +26,13 @@ spring:
       maxWait: 60000
 
 # 打印mybatis执行的sql语句
-mybatis:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 snowflake:
+  datacenterId: 1
   workerId: 1
-  datacenterId: 0
 
 jwt:
-  signature-alg: HS256
-  expire: 300000
-  secretKey: mall
+  secretKey: mallSystem

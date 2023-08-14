@@ -1,8 +1,6 @@
 package com.learn.demo.mall.gateway.filter;
 
-import com.learn.demo.mall.gateway.config.CustomFilterConfig;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -16,23 +14,22 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 过滤黑名单（ip）
+ * 过滤黑名单
  * @author zh_cr
  */
 @Component
 @Slf4j
 public class BlackListFilter implements GlobalFilter, Ordered {
 
-    @Autowired
-    private CustomFilterConfig filterConfig;
+    @Value("${filter.blackList:}")
+    private List<String> blackList;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         String address = getClientIp(request);
-        List<String> blackIps = filterConfig.getBlackIps();
-        if (Objects.nonNull(blackIps) && blackIps.contains(address)) {
-            log.warn("filtered ip: " + address);
+        if (Objects.nonNull(blackList) && blackList.contains(address)) {
+            log.warn("拦截ip: " + address);
             return exchange.getResponse().setComplete();
         }
         return chain.filter(exchange);

@@ -1,0 +1,21 @@
+server:
+  port: 9010
+
+spring:
+  application:
+    name: canal
+  devtools:
+    livereload:
+      enabled: false
+  # rabbitmq相关
+  rabbitmq:
+    host: localhost
+
+# canal相关
+canal:
+  client:
+    instances:
+      example:
+        host: localhost
+        port: 11111
+        batch-size: 1000

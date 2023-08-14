@@ -12,6 +12,11 @@ public enum GoodsErrorCodeEnum implements ErrorCode {
     BIZ_CATEGORY_WARNING(10200, "分类管理异常提示"),
     BIZ_SPEC_WARNING(10300, "规格管理异常提示"),
     BIZ_SPU_WARNING(10400, "商品管理异常提示"),
+    BIZ_ES_IMPORT_SKU_ERROR(10401, "商品管理导入sku索引异常"),
+    BIZ_ES_DELETE_SKU_ERROR(10402, "商品管理删除sku索引异常"),
+    BIZ_FAST_DFS_WARNING(10500, "FastDFS异常提示"),
+    BIZ_FAST_DFS_UPLOAD_ERROR(10501, "FastDFS上传文件出错"),
+    BIZ_FAST_DFS_DOWNLOAD_ERROR(10502, "FastDFS下载文件出错"),
     ;
 
     private final Integer code;

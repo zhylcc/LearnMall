@@ -127,4 +127,8 @@ public class SpuService {
         criteria.andEqualTo("spuId", spuId);
         return skuMapper.selectByExample(example);
     }
+
+    public SpuPO queryById(String id) {
+        return spuMapper.selectByPrimaryKey(id);
+    }
 }

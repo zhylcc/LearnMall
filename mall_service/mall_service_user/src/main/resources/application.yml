@@ -1,0 +1,40 @@
+server:
+  port: 9003
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6868/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: user
+  devtools:
+    livereload:
+      port: 35733
+  datasource:
+    druid:  # 集成druid连接池
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/mall_user?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: 123456
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+
+# 打印mybatis执行的sql语句
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+snowflake:
+  datacenterId: 3
+  workerId: 1
+
+# 资源服务器配置
+resource:
+  public-key: key/public.key
+  ignoring-urls: /user/info/load/**

@@ -10,6 +10,7 @@ import lombok.*;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Result<T> {
 
     @NonNull

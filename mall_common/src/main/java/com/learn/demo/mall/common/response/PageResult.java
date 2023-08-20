@@ -12,6 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class PageResult<T> {
 
     /**

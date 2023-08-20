@@ -47,7 +47,7 @@ fdfs:
 
 # 雪花算法工具类配置
 snowflake:
-  datacenterId: 0
+  datacenterId: 1
   workerId: 1
 
 # 自定义rabbitmq配置
@@ -57,3 +57,9 @@ consumer:
       importIndex: indexBatchImportQueue
       deleteIndex: indexBatchDeleteQueue
 
+# 资源服务器配置
+resource:
+  public-key: key/public.key
+#  ignoring-urls: ,
+
+cart-key-prefix: cart_

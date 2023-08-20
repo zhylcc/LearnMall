@@ -28,6 +28,7 @@ spring:
       loadbalancer:
         use404: true  # 无法找到服务实例时由404替代默认的503
       routes:   # 路由
+        # 商品微服务
         - id: goods
           uri: lb://goods  # 负载均衡
           predicates:
@@ -39,18 +40,38 @@ spring:
                 key-resolver: "#{@ipKeyResolver}"
                 redis-rate-limiter.replenishRate: 1  # 令牌桶每秒填充平均速率
                 redis-rate-limiter.burstCapacity: 2  # 令牌桶总容量
+        # 系统管理微服务
         - id: system
           uri: lb://system
           predicates:
             - Path=/system/**
+        # 用户微服务
+        - id: user
+          uri: lb://user
+          predicates:
+            - Path=/user/**
+        # 订单微服务
+        - id: order
+          uri: lb://order
+          predicates:
+            - Path=/order/**
+        # 前台微服务（测试用）
+        - id: web
+          uri: lb://web
+          predicates:
+            - Path=/web/**
+        # 授权微服务
+        - id: auth
+          uri: lb://auth
+          predicates:
+            - Path=/auth/**
   redis:
     host: localhost
 
 jwt:
   secretKey: mallSystem
-  header: token
 
 filter:
   blackList: 192.168.200.1,
   auth:
-    loginUrls: /system/admin/login,
+    loginUrls: /system/admin/login,/auth/login,

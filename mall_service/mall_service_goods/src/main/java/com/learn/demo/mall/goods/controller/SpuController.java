@@ -4,10 +4,11 @@ import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.response.Result;
 import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
 import com.learn.demo.mall.goods.pojo.GoodsPO;
+import com.learn.demo.mall.goods.pojo.SpuPO;
 import com.learn.demo.mall.goods.service.SpuService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
@@ -49,5 +50,10 @@ public class SpuController {
     public Result<Void> deleteGoodsById(@PathVariable String id) {
         spuService.deleteGoodsById(id);
         return Result.success();
+    }
+
+    @GetMapping("/{id}")
+    public Result<SpuPO> queryById(@PathVariable String id) {
+        return Result.success(spuService.queryById(id));
     }
 }

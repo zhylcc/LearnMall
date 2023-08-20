@@ -1,0 +1,18 @@
+server:
+  port: 9005
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6868/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: web
+  devtools:
+    livereload:
+      port: 35735
+  main:
+    allow-bean-definition-overriding: true

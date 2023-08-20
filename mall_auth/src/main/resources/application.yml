@@ -1,0 +1,49 @@
+server:
+  port: 9100
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6868/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: auth
+  devtools:
+    livereload:
+      enabled: false
+  datasource:
+    druid: # 集成druid连接池
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/mall_oauth?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: 123456
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+  redis:
+    host: localhost
+  main:
+    allow-bean-definition-overriding: true
+
+# 授权服务器私钥
+encrypt:
+  key-store:
+    location: classpath:/key/mall.jks  # 密钥库位置
+    password: storepass  # 密钥库密码
+    alias: mall  # 密钥别名
+    secret: keypass  # 密钥密码
+
+# 认证服务器配置
+authentication:
+  ignoring-urls: /auth/login,/auth/logout
+  user-authorities: admin
+  token:
+    timeout: 1200  # redis过期时间，s
+  cookie:
+    domain: localhost  # cookie域名
+    max-age: -1  # 过期时间，-1表示浏览器关闭才销毁
+

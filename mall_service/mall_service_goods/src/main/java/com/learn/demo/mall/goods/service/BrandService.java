@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
+import org.apache.commons.collections.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -79,7 +79,6 @@ public class BrandService {
         return brand.getId();
     }
 
-    @Transactional
     public void deleteBrandById(Integer id) {
         brandMapper.deleteByPrimaryKey(id);
     }

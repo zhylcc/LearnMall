@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -30,11 +32,17 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     @Value("${filter.auth.loginUrls:}")
     private List<String> loginUrls;
 
-    @Value("${jwt.header:token}")
-    private String tokenHeaderName;
+    private static final String TOKEN_HEADER = "token";
+    private static final String JTI_COOKIE_KEY = "jti";
+    private static final String AUTHORIZATION_HEADER = "Authorization";
+    private static final String AUTHORIZATION_VALUE_PREFIX = "Bearer ";
+
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -46,9 +54,9 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
 
+        // 1. 系统管理服务鉴权
         // 获取并验证token
-        String token = request.getHeaders().getFirst(tokenHeaderName);
-
+        String token = request.getHeaders().getFirst(TOKEN_HEADER);
         if (StringUtils.isNotBlank(token)) {
             try {
                 Claims claims = jwtUtil.parseToken(token);
@@ -58,18 +66,50 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
             } catch (Exception e) {
                 // 鉴权失败：token不合法
                 log.warn(e.getMessage(), e);
-                response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                return response.setComplete();
+                return authenticationFail(response);
             }
         }
 
-        // 鉴权失败：token为空
+        // 2. SSO授权服务鉴权
+        // 获取cookie中的jti
+        String jti = this.getJtiFromCookie(request);
+        if (StringUtils.isEmpty(jti)) {
+            return authenticationFail(response);
+        }
+        // 获取redis中的jwt
+        String jwt = this.getJwtFromRedis(jti);
+        if (StringUtils.isNotBlank(jwt)) {
+            request.mutate().header(AUTHORIZATION_HEADER, AUTHORIZATION_VALUE_PREFIX+jwt);
+            log.info("授权信息设置成功，jti: " + jti);
+            return chain.filter(exchange);
+        }
+
+        return authenticationFail(response);
+    }
+
+
+
+    @Override
+    public int getOrder() {
+        return 0;
+    }
+
+    private String getJtiFromCookie(ServerHttpRequest request) {
+        HttpCookie cookie = request.getCookies().getFirst(JTI_COOKIE_KEY);
+        if (Objects.isNull(cookie)) {
+            return null;
+        }
+        return cookie.getValue();
+    }
+
+    private String getJwtFromRedis(String jti) {
+        return stringRedisTemplate.boundValueOps(jti).get();
+    }
+
+    private Mono<Void> authenticationFail(ServerHttpResponse response) {
+        // 鉴权失败
         response.setStatusCode(HttpStatus.UNAUTHORIZED);
         return response.setComplete();
     }
 
-    @Override
-    public int getOrder() {
-        return 1;
-    }
 }

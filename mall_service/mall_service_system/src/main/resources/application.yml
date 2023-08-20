@@ -31,7 +31,7 @@ spring:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 snowflake:
-  datacenterId: 1
+  datacenterId: 2
   workerId: 1
 
 jwt:

@@ -9,6 +9,7 @@ import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
 import com.learn.demo.mall.goods.enums.SortOrderEnum;
 import com.learn.demo.mall.goods.pojo.SkuPO;
 import com.learn.demo.mall.goods.request.SkuExampleESReq;
+import com.learn.demo.mall.order.pojo.OrderItemPO;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
@@ -23,6 +24,7 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -30,9 +32,12 @@ import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
 import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPageImpl;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +55,12 @@ public class SkuService {
 
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @Value("${cart-key-prefix}")
+    private String cartKeyPrefix;
 
     /**
      * 创建索引
@@ -198,5 +209,22 @@ public class SkuService {
             result.put("specs", specs);
         }
         return result;
+    }
+
+    public SkuPO queryById(String id) {
+        return skuMapper.selectByPrimaryKey(id);
+    }
+
+    public Integer reduce(String username) {
+        AtomicInteger delta = new AtomicInteger();
+        Objects.requireNonNull(redisTemplate.boundHashOps(cartKeyPrefix + username).values())
+                .forEach(item->{
+                    int count = skuMapper.reduce((OrderItemPO) item);
+                    if (count <= 0) {
+                        throw new BaseBizException("库存不足", GoodsErrorCodeEnum.BIZ_SKU_LACK);
+                    }
+                    delta.addAndGet(count);
+                });
+        return delta.get();
     }
 }

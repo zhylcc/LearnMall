@@ -3,6 +3,7 @@ package com.learn.demo.mall.goods.controller;
 import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.response.Result;
 import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
+import com.learn.demo.mall.goods.pojo.SkuPO;
 import com.learn.demo.mall.goods.request.SkuExampleESReq;
 import com.learn.demo.mall.goods.service.SkuService;
 import org.apache.commons.lang.StringUtils;
@@ -52,5 +53,15 @@ public class SkuController {
             throw new BaseBizException("索引时商品名称不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
         }
         return Result.success(skuService.search(req, page, size));
+    }
+
+    @GetMapping("/{id}")
+    public Result<SkuPO> queryById(@PathVariable String id) {
+        return Result.success(skuService.queryById(id));
+    }
+
+    @PostMapping("/reduce")
+    public Result<Integer> reduce(@RequestParam String username) {
+        return Result.success(skuService.reduce(username));
     }
 }

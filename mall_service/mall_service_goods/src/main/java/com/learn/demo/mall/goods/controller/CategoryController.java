@@ -27,13 +27,13 @@ import java.util.List;
 @RequestMapping("/goods/category")
 public class CategoryController {
 
-    @Autowired
+    @Resource
     private CategoryService categoryService;
 
-    @Autowired
+    @Resource
     private BrandService brandService;
 
-    @Autowired
+    @Resource
     private TemplateService templateService;
 
     @GetMapping("/{id}")

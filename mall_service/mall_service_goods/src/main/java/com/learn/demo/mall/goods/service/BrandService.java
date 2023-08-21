@@ -26,7 +26,7 @@ import java.util.Objects;
 @Service
 public class BrandService {
 
-    @Autowired
+    @Resource
     private BrandMapper brandMapper;
 
     private Example createExample(BrandExampleReq req) {

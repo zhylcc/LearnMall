@@ -1,6 +1,5 @@
 package com.learn.demo.mall.auth.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +7,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+import javax.annotation.Resource;
 
 /**
  * Web安全配置
@@ -17,9 +18,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // 放行url
-    @Value("${authentication.ignoring-urls:}")
-    private String[] ignoringUrls;
+    @Resource
+    private AuthenticationConfig authenticationConfig;
 
     /**
      * 认证管理器
@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(ignoringUrls);
+        web.ignoring().antMatchers(authenticationConfig.getWhiteList());
     }
 
 }

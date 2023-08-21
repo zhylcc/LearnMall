@@ -1,4 +1,4 @@
-package com.learn.demo.mall.common.util;
+package com.learn.demo.mall.system.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -45,7 +45,6 @@ public class SnowflakeIdUtil {
         if (timestamp < lastTimestamp) {
             throw new RuntimeException(String.format("Clock moved backwards.  Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
         }
-
         if (lastTimestamp == timestamp) {
             // 当前毫秒内，则+1
             sequence = (sequence + 1) & SEQUENCE_MASK;
@@ -58,7 +57,6 @@ public class SnowflakeIdUtil {
         }
         lastTimestamp = timestamp;
         // ID偏移组合生成最终的ID，并返回ID
-
         return ((timestamp - TW_EPOCH) << TIMESTAMP_LEFT_SHIFT)
                 | (datacenterId << DATACENTER_ID_SHIFT)
                 | (workerId << WORKER_ID_SHIFT) | sequence;
@@ -74,5 +72,13 @@ public class SnowflakeIdUtil {
 
     private long timeGen() {
         return System.currentTimeMillis();
+    }
+
+    public void setWorkerId(long workerId) {
+        this.workerId = workerId;
+    }
+
+    public void setDatacenterId(long datacenterId) {
+        this.datacenterId = datacenterId;
     }
 }

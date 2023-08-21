@@ -1,7 +1,7 @@
 package com.learn.demo.mall.order.controller;
 
 import com.learn.demo.mall.common.response.Result;
-import com.learn.demo.mall.common.util.KeyConfigUtil;
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.order.request.AddCartReq;
 import com.learn.demo.mall.order.response.ListCartResp;
 import com.learn.demo.mall.order.service.CartService;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/order/cart")
 public class CartController {
 
-    @Autowired
+    @Resource
     private CartService cartService;
 
-    @Autowired
+    @Resource
     private TokenDecodeService tokenDecodeService;
 
     @PostMapping

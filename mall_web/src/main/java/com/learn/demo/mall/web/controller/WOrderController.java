@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/web/order")
 public class WOrderController {
 
-    @Autowired
+    @Resource
     private AddressFeign addressFeign;
 
-    @Autowired
+    @Resource
     private CartFeign cartFeign;
 
-    @Autowired
+    @Resource
     private OrderFeign orderFeign;
 
     @GetMapping

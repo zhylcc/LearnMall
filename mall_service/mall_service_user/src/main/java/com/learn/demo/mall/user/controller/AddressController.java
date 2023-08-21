@@ -1,7 +1,7 @@
 package com.learn.demo.mall.user.controller;
 
 import com.learn.demo.mall.common.response.Result;
-import com.learn.demo.mall.common.util.KeyConfigUtil;
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.user.pojo.AddressPO;
 import com.learn.demo.mall.user.service.AddressService;
 import com.learn.demo.mall.user.service.TokenDecodeService;
@@ -22,10 +22,10 @@ import java.util.List;
 @RequestMapping("/user/address")
 public class AddressController {
 
-    @Autowired
+    @Resource
     private AddressService addressService;
 
-    @Autowired
+    @Resource
     private TokenDecodeService tokenDecodeService;
 
     @GetMapping

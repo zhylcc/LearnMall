@@ -1,11 +1,10 @@
 package com.learn.demo.mall.gateway.filter;
 
-import com.learn.demo.mall.common.util.JwtUtil;
+import com.learn.demo.mall.gateway.config.GatewayConfig;
+import com.learn.demo.mall.gateway.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -18,6 +17,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,14 +31,14 @@ import java.util.Objects;
 @Slf4j
 public class AuthorizedFilter implements GlobalFilter, Ordered {
 
-    @Autowired
+    @Resource
     private JwtUtil jwtUtil;
 
-    @Autowired
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
-    @Value("${filter.auth.loginUrls:}")
-    private List<String> loginUrls;
+    @Resource
+    private GatewayConfig gatewayConfig;
 
     private static final String TOKEN_HEADER = "token";
     private static final String JTI_COOKIE_KEY = "jti";
@@ -49,14 +51,15 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
 
+        List<String> whiteList = new ArrayList<>(Arrays.asList(gatewayConfig.getWhiteList()));
         // 放行登录请求
-        if (Objects.nonNull(loginUrls) && loginUrls.contains(request.getURI().getPath())) {
+        if (whiteList.contains(request.getURI().getPath())) {
             return chain.filter(exchange);
         }
 
         // 1. 系统管理服务鉴权
         // 获取并验证token
-        String token = request.getHeaders().getFirst(TOKEN_HEADER);
+         String token = request.getHeaders().getFirst(TOKEN_HEADER);
         if (StringUtils.isNotBlank(token)) {
             try {
                 Claims claims = jwtUtil.parseToken(token);
@@ -86,8 +89,6 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
 
         return authenticationFail(response);
     }
-
-
 
     @Override
     public int getOrder() {

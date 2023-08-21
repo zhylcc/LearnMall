@@ -1,21 +1,20 @@
-package com.learn.demo.mall.auth.enums;
-
-import com.learn.demo.mall.common.enums.ErrorCode;
+package com.learn.demo.mall.common.enums;
 
 /**
+ * 错误异常码
  * @author zh_cr
  */
 
-public enum AuthErrorCodeEnum implements ErrorCode {
-    ARGUMENT_ILLEGAL(100001, "授权服务参数不合法"),
-    TOKEN_APPLY_FAIL(100002, "申请令牌失败"),
+public enum BasicErrorCodeEnum implements ErrorCode {
+    UNKNOWN_ERROR(-1, "未知异常"),
+    PARAM_ERROR(-2, "参数错误"),
     ;
 
     private final Integer code;
 
     private final String message;
 
-    AuthErrorCodeEnum(Integer code, String message) {
+    BasicErrorCodeEnum(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

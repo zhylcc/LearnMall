@@ -6,8 +6,9 @@ import com.learn.demo.mall.system.enums.SystemErrorCodeEnum;
 import com.learn.demo.mall.system.pojo.AdminPO;
 import com.learn.demo.mall.system.service.AdminService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * 管理员用户管理
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/system/admin")
 public class AdminController {
 
-    @Autowired
+    @Resource
     private AdminService adminService;
 
     @PostMapping

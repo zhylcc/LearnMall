@@ -21,7 +21,7 @@ import java.util.Map;
 @RequestMapping("/goods/sku")
 public class SkuController {
 
-    @Autowired
+    @Resource
     private SkuService skuService;
 
     @PostMapping("/index")

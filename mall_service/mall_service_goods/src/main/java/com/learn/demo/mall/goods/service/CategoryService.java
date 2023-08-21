@@ -22,7 +22,7 @@ import java.util.Objects;
 @Service
 public class CategoryService {
 
-    @Autowired
+    @Resource
     private CategoryMapper categoryMapper;
 
     private Example createExample(CategoryExampleReq req) {

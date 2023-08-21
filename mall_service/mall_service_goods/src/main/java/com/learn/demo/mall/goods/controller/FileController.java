@@ -2,7 +2,6 @@ package com.learn.demo.mall.goods.controller;
 
 import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.response.Result;
-import com.learn.demo.mall.common.util.FastDFSUtil;
 import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +22,7 @@ import java.util.Objects;
 @RequestMapping("/goods/file")
 public class FileController {
 
-    @Autowired
+    @Resource
     private FastDFSUtil fastDfsUtil;
 
     @PostMapping

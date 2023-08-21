@@ -1,7 +1,7 @@
 package com.learn.demo.mall.user.controller;
 
 import com.learn.demo.mall.common.response.Result;
-import com.learn.demo.mall.common.util.KeyConfigUtil;
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.user.pojo.UserPO;
 import com.learn.demo.mall.user.service.TokenDecodeService;
 import com.learn.demo.mall.user.service.UserService;
@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user/info")
 public class UserController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
-    @Autowired
+    @Resource
     private TokenDecodeService tokenDecodeService;
 
     @GetMapping("/{username}")

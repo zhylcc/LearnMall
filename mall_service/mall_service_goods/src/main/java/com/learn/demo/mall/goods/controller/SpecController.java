@@ -18,10 +18,10 @@ import java.util.List;
 @RequestMapping("/goods/spec")
 public class SpecController {
 
-    @Autowired
+    @Resource
     private TemplateService templateService;
 
-    @Autowired
+    @Resource
     private CategoryService categoryService;
 
     @GetMapping("/category/{categoryName}")

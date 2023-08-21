@@ -47,13 +47,13 @@ import java.util.stream.Collectors;
 @Service
 public class SkuService {
 
-    @Autowired
+    @Resource
     private SkuMapper skuMapper;
 
-    @Autowired
+    @Resource
     private ESSkuMapper esSkuMapper;
 
-    @Autowired
+    @Resource
     private ElasticsearchTemplate elasticsearchTemplate;
 
     @Resource

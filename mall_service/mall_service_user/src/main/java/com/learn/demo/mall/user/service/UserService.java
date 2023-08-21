@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     public UserPO queryByUsername(String username) {

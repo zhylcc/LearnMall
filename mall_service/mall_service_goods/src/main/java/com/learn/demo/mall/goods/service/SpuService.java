@@ -2,7 +2,7 @@ package com.learn.demo.mall.goods.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.learn.demo.mall.common.util.SnowflakeIdUtil;
+import com.learn.demo.mall.goods.utils.SnowflakeIdUtil;
 import com.learn.demo.mall.goods.dao.*;
 import com.learn.demo.mall.goods.enums.SpuStatusEnum;
 import com.learn.demo.mall.goods.pojo.*;
@@ -25,22 +25,22 @@ import java.util.Objects;
 @Service
 public class SpuService {
 
-    @Autowired
+    @Resource
     private SpuMapper spuMapper;
 
-    @Autowired
+    @Resource
     private CategoryBrandMapper categoryBrandMapper;
 
-    @Autowired
+    @Resource
     private CategoryMapper categoryMapper;
 
-    @Autowired
+    @Resource
     private BrandMapper brandMapper;
 
-    @Autowired
+    @Resource
     private SkuMapper skuMapper;
 
-    @Autowired
+    @Resource
     private SnowflakeIdUtil snowflakeIdUtil;
 
     private void saveSpuFromGoods(GoodsPO goods) {

@@ -22,7 +22,7 @@ import java.util.Objects;
 @RequestMapping("/goods/spu")
 public class SpuController {
 
-    @Autowired
+    @Resource
     private SpuService spuService;
 
     @PostMapping()

@@ -1,11 +1,9 @@
 package com.learn.demo.mall.auth.config;
 
 import com.learn.demo.mall.common.response.Result;
-import com.learn.demo.mall.user.pojo.UserPO;
 import com.learn.demo.mall.user.feign.UserFeign;
+import com.learn.demo.mall.user.pojo.UserPO;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -17,6 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 
+import javax.annotation.Resource;
 import java.util.Objects;
 
 /**
@@ -27,13 +26,13 @@ import java.util.Objects;
 @Configuration
 public class UserDetailsServiceConfig implements UserDetailsService {
 
-    @Value("${authentication.user-authorities:}")
-    private String authoritiesCommaString;
+    @Resource
+    private AuthenticationConfig authenticationConfig;
 
-    @Autowired
+    @Resource
     private ClientDetailsService oauthClientDetailsService;
 
-    @Autowired
+    @Resource
     private UserFeign userFeign;
 
     @Override
@@ -55,6 +54,6 @@ public class UserDetailsServiceConfig implements UserDetailsService {
         if (Objects.isNull(result) || Objects.isNull(result.getData())) {
             return null;
         }
-        return new User(username, result.getData().getPassword(), AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesCommaString));
+        return new User(username, result.getData().getPassword(), AuthorityUtils.createAuthorityList(authenticationConfig.getAuthorities()));
     }
 }

@@ -1,7 +1,9 @@
 package com.learn.demo.mall.auth.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.bootstrap.encrypt.KeyProperties;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,12 +25,51 @@ import java.security.KeyPair;
  * @author zh_cr
  */
 @Configuration
-public class AuthorizationCommonConfig {
+@ConfigurationProperties("authentication")
+@Getter
+@Setter
+public class AuthenticationConfig {
+
+    /**
+     * 加载私钥配置
+     */
+    private KeyStore keyStore;
+
+    /**
+     * 放行url列表
+     */
+    private String[] whiteList;
+
+    /**
+     * 用户授权
+     */
+    private String[] authorities;
+
+    /**
+     * jwt在redis中的过期时间
+     */
+    private Integer jwtTimeout;
+
+    /**
+     * jti cookie作用域
+     */
+    private String cookieDomain;
+
+    /**
+     * jti cookie过期时间
+     */
+    private Integer cookieMaxAge;
+
+    /**
+     * 服务实例ID
+     */
+    @Value("${spring.application.name}")
+    private String instanceId;
 
     /**
      * oauth2数据源
      */
-    @Autowired
+    @Resource
     private DataSource dataSource;
 
     /**
@@ -47,16 +88,18 @@ public class AuthorizationCommonConfig {
         return new JdbcClientDetailsService(dataSource);
     }
 
-    /**
-     * 加载私钥配置
-     */
-    @Bean("keyProp")
-    public KeyProperties keyProperties(){
-        return new KeyProperties();
-    }
+    @Getter
+    @Setter
+    public static class KeyStore {
 
-    @Resource(name = "keyProp")
-    private KeyProperties keyProperties;
+        private org.springframework.core.io.Resource location;
+
+        private String storePass;
+
+        private String alias;
+
+        private String keyPass;
+    }
 
     /**
      * 使用私钥配置JWT
@@ -65,11 +108,11 @@ public class AuthorizationCommonConfig {
     public JwtAccessTokenConverter oauthJwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         KeyPair keyPair = new KeyStoreKeyFactory(
-                keyProperties.getKeyStore().getLocation(),  // 私钥位置
-                keyProperties.getKeyStore().getPassword().toCharArray())  // 私钥库
+                keyStore.getLocation(),  // 私钥位置
+                keyStore.getStorePass().toCharArray())  // 私钥库
                 .getKeyPair(
-                        keyProperties.getKeyStore().getAlias(),  //私钥别名
-                        keyProperties.getKeyStore().getSecret().toCharArray());  //私钥密码
+                        keyStore.getAlias(),  //私钥别名
+                        keyStore.getKeyPass().toCharArray());  //私钥密码
         converter.setKeyPair(keyPair);
         return converter;
     }

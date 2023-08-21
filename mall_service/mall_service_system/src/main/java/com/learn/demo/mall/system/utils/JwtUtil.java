@@ -1,4 +1,4 @@
-package com.learn.demo.mall.common.util;
+package com.learn.demo.mall.system.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -18,16 +18,15 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // 加密算法
-    @Value("${jwt.signatureAlg:HS256}")
-    private String signatureAlg;
+    /**
+     * 有效期，ms
+     */
+    private static final Long EXPIRE = 30000L;
 
-    //有效期，ms
-    @Value("${jwt.expire:300000}")
-    private Long expire;
-
-    //设置秘钥明文
-    @Value("${jwt.secretKey:mallJwt}")
+    /**
+     * 密钥
+     */
+    @Value("${jwt.secretKey}")
     private String secretKey;
 
     /**
@@ -37,10 +36,9 @@ public class JwtUtil {
      * @return token
      */
     public String createToken(String id, String subject) {
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.forName(signatureAlg);
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
-        long expMillis = nowMillis + expire;
+        long expMillis = nowMillis + EXPIRE;
         Date expDate = new Date(expMillis);
         SecretKey secretKey = generalKey();
 
@@ -49,7 +47,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuer("mall")
                 .setIssuedAt(now)
-                .signWith(signatureAlgorithm, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .setExpiration(expDate);
         return builder.compact();
     }

@@ -1,4 +1,4 @@
-package com.learn.demo.mall.common.util;
+package com.learn.demo.mall.goods.utils;
 
 import com.github.tobato.fastdfs.domain.conn.FdfsWebServer;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
@@ -10,7 +10,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -20,10 +23,10 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class FastDFSUtil {
 
-    @Autowired
+    @Resource
     private FastFileStorageClient storageClient;
 
-    @Autowired
+    @Resource
     private FdfsWebServer fdfsWebServer;
 
     /**

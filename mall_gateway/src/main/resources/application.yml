@@ -13,10 +13,10 @@ spring:
     name: gateway
   devtools:
     livereload:
-      enabled: false
+      port: 35729  # 默认值
   cloud:
     gateway:
-      globalcors:  # 全局跨域请求配置
+      globalcors:  # 网关跨域请求配置（各微服务仍需单独配置）
         cors-configurations:
           '[/**]':  # 所有请求
             allowedOrigins: "*"  # 所有域
@@ -68,10 +68,10 @@ spring:
   redis:
     host: localhost
 
-jwt:
-  secretKey: mallSystem
-
-filter:
-  blackList: 192.168.200.1,
-  auth:
-    loginUrls: /system/admin/login,/auth/login,
+gateway:
+  jwt-key: mallSystem  # jwt签发密钥（本项目中仅对系统微服务签发）
+  black-list:  # 黑名单
+    - 192.168.200.1
+  white-list:  # 白名单
+    - /system/admin/login
+    - /auth/login

@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class AddressService {
 
-    @Autowired
+    @Resource
     private AddressMapper addressMapper;
 
     public List<AddressPO> queryByUsername(String userName) {

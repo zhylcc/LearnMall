@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/goods/brand")
 public class BrandController {
 
-    @Autowired
+    @Resource
     private BrandService brandService;
 
     @GetMapping("/{id}")

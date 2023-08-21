@@ -18,7 +18,7 @@ import java.util.Map;
 @CanalEventListener
 public class SpuProducer {
 
-    @Autowired
+    @Resource
     private RabbitTemplate rabbitTemplate;
 
     private static final String COL_MARKETABLE = "is_marketable";

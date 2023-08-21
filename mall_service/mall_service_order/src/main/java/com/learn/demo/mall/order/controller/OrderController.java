@@ -1,7 +1,7 @@
 package com.learn.demo.mall.order.controller;
 
 import com.learn.demo.mall.common.response.Result;
-import com.learn.demo.mall.common.util.KeyConfigUtil;
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.order.pojo.OrderPO;
 import com.learn.demo.mall.order.service.OrderService;
 import com.learn.demo.mall.order.service.TokenDecodeService;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/order/info")
 public class OrderController {
 
-    @Autowired
+    @Resource
     private TokenDecodeService tokenDecodeService;
 
-    @Autowired
+    @Resource
     private OrderService orderService;
 
     @PostMapping("/apply")

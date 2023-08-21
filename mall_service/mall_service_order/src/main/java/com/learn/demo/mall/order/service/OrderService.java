@@ -1,6 +1,6 @@
 package com.learn.demo.mall.order.service;
 
-import com.learn.demo.mall.common.util.SnowflakeIdUtil;
+import com.learn.demo.mall.common.utils.SnowflakeIdUtil;
 import com.learn.demo.mall.goods.feign.SkuFeign;
 import com.learn.demo.mall.order.dao.OrderItemMapper;
 import com.learn.demo.mall.order.dao.OrderMapper;
@@ -27,25 +27,25 @@ public class OrderService {
     @Value("${cart-key-prefix}")
     private String cartKeyPrefix;
 
-    @Autowired
+    @Resource
     private OrderMapper orderMapper;
 
-    @Autowired
+    @Resource
     private OrderItemMapper orderItemMapper;
 
-    @Autowired
+    @Resource
     private CartService cartService;
 
-    @Autowired
+    @Resource
     private SnowflakeIdUtil snowflakeIdUtil;
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired
+    @Resource
     private SkuFeign skuFeign;
 
-    @Autowired
+    @Resource
     private UserFeign userFeign;
 
     public String add(OrderPO order) {

@@ -1,4 +1,4 @@
-package com.learn.demo.mall.common.util;
+package com.learn.demo.mall.auth.utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Cookie工具类哦
+ * Cookie工具类
  * @author zh_cr
  */
 public class CookieUtil {

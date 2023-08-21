@@ -10,9 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * 授权服务器
  * @author zh_cr
  */
-@SpringBootApplication(
-        scanBasePackages = {"com.learn.demo.mall"}
-)
+@SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients(basePackages = "com.learn.demo.mall.user.feign")
 @Slf4j

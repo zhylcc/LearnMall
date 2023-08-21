@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/web/cart")
 public class WCartController {
 
-    @Autowired
+    @Resource
     private CartFeign cartFeign;
 
     @GetMapping

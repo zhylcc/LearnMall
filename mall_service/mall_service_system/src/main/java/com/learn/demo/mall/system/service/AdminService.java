@@ -1,18 +1,18 @@
 package com.learn.demo.mall.system.service;
 
 import com.learn.demo.mall.common.exception.BaseBizException;
-import com.learn.demo.mall.common.util.JwtUtil;
-import com.learn.demo.mall.common.util.SnowflakeIdUtil;
 import com.learn.demo.mall.system.dao.AdminMapper;
 import com.learn.demo.mall.system.enums.SystemErrorCodeEnum;
 import com.learn.demo.mall.system.pojo.AdminPO;
+import com.learn.demo.mall.system.utils.JwtUtil;
+import com.learn.demo.mall.system.utils.SnowflakeIdUtil;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.Objects;
 
 /**
@@ -21,13 +21,13 @@ import java.util.Objects;
 @Service
 public class AdminService {
 
-    @Autowired
+    @Resource
     private AdminMapper adminMapper;
 
-    @Autowired
+    @Resource
     private SnowflakeIdUtil snowflakeIdUtil;
 
-    @Autowired
+    @Resource
     private JwtUtil jwtUtil;
 
     public AdminPO queryAdminByLoginName(String name) {

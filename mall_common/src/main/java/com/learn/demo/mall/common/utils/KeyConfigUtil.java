@@ -1,4 +1,4 @@
-package com.learn.demo.mall.common.util;
+package com.learn.demo.mall.common.utils;
 
 /**
  * 动态配置（主要用于管理测试开关）

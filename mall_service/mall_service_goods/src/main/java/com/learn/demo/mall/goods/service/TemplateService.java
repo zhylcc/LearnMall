@@ -16,7 +16,7 @@ import java.util.List;
 @Service
 public class TemplateService {
 
-    @Autowired
+    @Resource
     private TemplateMapper templateMapper;
 
     public List<SpecPO> querySpecsByTemplateIds(List<Integer> templateIds) {

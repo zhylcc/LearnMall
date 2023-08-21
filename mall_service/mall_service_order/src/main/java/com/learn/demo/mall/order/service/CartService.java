@@ -33,10 +33,10 @@ public class CartService {
     @Resource
     private RedisTemplate<String, Map<String, OrderItemPO>> redisTemplate;
 
-    @Autowired
+    @Resource
     private SkuFeign skuFeign;
 
-    @Autowired
+    @Resource
     private SpuFeign spuFeign;
 
     public String add(AddCartReq req) {

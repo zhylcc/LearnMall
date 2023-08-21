@@ -17,6 +17,7 @@ import java.util.Objects;
  * 过滤黑名单
  * @author zh_cr
  */
+@Deprecated
 @Component
 @Slf4j
 public class BlackListFilter implements GlobalFilter, Ordered {

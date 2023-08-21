@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SpuConsumer {
 
-    @Autowired
+    @Resource
     private SpuService spuService;
 
-    @Autowired
+    @Resource
     private SkuService skuService;
 
     @RabbitListener(queues = "${consumer.spu.queue.importIndex}")

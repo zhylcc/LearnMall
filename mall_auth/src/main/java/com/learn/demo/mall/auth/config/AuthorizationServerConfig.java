@@ -1,6 +1,5 @@
 package com.learn.demo.mall.auth.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +12,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**
@@ -23,25 +23,25 @@ import javax.sql.DataSource;
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
+    @Resource
     private DataSource dataSource;
 
-    @Autowired
+    @Resource
     private ClientDetailsService oauthClientDetailsService;
 
-    @Autowired
+    @Resource
     private UserDetailsServiceConfig oauthUserDetailService;
 
-    @Autowired
+    @Resource
     private TokenStore oauthTokenStore;
 
-    @Autowired
+    @Resource
     private PasswordEncoder oauthPasswordEncoder;
 
-    @Autowired
+    @Resource
     private JwtAccessTokenConverter oauthJwtAccessTokenConverter;
 
-    @Autowired
+    @Resource
     private AuthenticationManager oauthAuthenticationManager;
 
     /**

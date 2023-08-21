@@ -1,11 +1,10 @@
 package com.learn.demo.mall.auth.service;
 
+import com.learn.demo.mall.auth.config.AuthenticationConfig;
 import com.learn.demo.mall.auth.enums.AuthErrorCodeEnum;
 import com.learn.demo.mall.auth.request.AuthLoginReq;
 import com.learn.demo.mall.common.entity.AuthToken;
 import com.learn.demo.mall.common.exception.BaseBizException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpEntity;
@@ -17,6 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -28,23 +28,21 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class AuthService {
 
-    @Autowired
+    @Resource
     private RestTemplate restTemplate;
 
-    @Autowired
+    @Resource
     private LoadBalancerClient loadBalancerClient;
 
-    @Autowired
+    @Resource
     private StringRedisTemplate stringRedisTemplate;
 
-    @Value("${authentication.token.timeout}")
-    private Long timeout;
+    @Resource
+    private AuthenticationConfig authenticationConfig;
 
-    @Value("${spring.application.name}")
-    private String applicationName;
 
     public String login(AuthLoginReq req) {
-        String applyUrl = loadBalancerClient.choose(applicationName).getUri() + "/oauth/token";
+        String applyUrl = loadBalancerClient.choose(authenticationConfig.getInstanceId()).getUri() + "/oauth/token";
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "password"); // 密码方式请求令牌
         body.add("username", req.getUsername());
@@ -68,7 +66,7 @@ public class AuthService {
         if (!authToken.valid()) {
             throw new BaseBizException("申请令牌失败！", AuthErrorCodeEnum.TOKEN_APPLY_FAIL);
         }
-        stringRedisTemplate.boundValueOps(authToken.getJti()).set(authToken.getAccessToken(), timeout, TimeUnit.SECONDS);
+        stringRedisTemplate.boundValueOps(authToken.getJti()).set(authToken.getAccessToken(), authenticationConfig.getJwtTimeout(), TimeUnit.SECONDS);
         return authToken.getJti();
     }
 }

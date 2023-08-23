@@ -13,7 +13,7 @@ spring:
     name: gateway
   devtools:
     livereload:
-      port: 35729  # 默认值
+      enabled: false
   cloud:
     gateway:
       globalcors:  # 网关跨域请求配置（各微服务仍需单独配置）
@@ -60,6 +60,11 @@ spring:
           uri: lb://web
           predicates:
             - Path=/web/**
+        # 文件微服务
+        - id: file
+          uri: lb://file
+          predicates:
+            - Path=/file/**
         # 授权微服务
         - id: auth
           uri: lb://auth
@@ -69,7 +74,6 @@ spring:
     host: localhost
 
 gateway:
-  jwt-key: mallSystem  # jwt签发密钥（本项目中仅对系统微服务签发）
   black-list:  # 黑名单
     - 192.168.200.1
   white-list:  # 白名单

@@ -1,9 +1,10 @@
 package com.learn.demo.mall.user.service;
 
-import com.learn.demo.mall.user.pojo.UserPO;
 import com.learn.demo.mall.user.dao.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.learn.demo.mall.user.pojo.UserPO;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @author zh_cr

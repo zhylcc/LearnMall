@@ -1,5 +1,5 @@
 server:
-  port: 9002
+  port: 9003
 
 eureka:
   client:
@@ -13,26 +13,14 @@ spring:
     name: system
   devtools:
     livereload:
-      port: 35732
+      port: 35733
   datasource:
     druid:  # 集成druid连接池
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/mall_system?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
       username: root
       password: 123456
-      initialSize: 5
-      minIdle: 5
-      maxActive: 20
-      maxWait: 60000
-
-# 打印mybatis执行的sql语句
-#mybatis:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 snowflake:
-  datacenterId: 2
+  datacenterId: 3
   workerId: 1
-
-jwt:
-  secretKey: mallSystem

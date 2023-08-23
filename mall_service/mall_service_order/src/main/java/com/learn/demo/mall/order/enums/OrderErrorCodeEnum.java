@@ -1,6 +1,6 @@
 package com.learn.demo.mall.order.enums;
 
-import com.learn.demo.mall.common.enums.ErrorCode;
+import com.learn.demo.mall.common.exception.ErrorCode;
 
 /**
  * @author zh_cr

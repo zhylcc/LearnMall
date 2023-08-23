@@ -1,4 +1,4 @@
-package com.learn.demo.mall.common.enums;
+package com.learn.demo.mall.common.exception;
 
 /**
  * 异常状态码

@@ -9,9 +9,10 @@ import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
 import com.learn.demo.mall.goods.pojo.BrandPO;
 import com.learn.demo.mall.goods.request.BrandExampleReq;
 import com.learn.demo.mall.goods.service.BrandService;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * 品牌管理

@@ -3,7 +3,7 @@ package com.learn.demo.mall.common.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 
@@ -26,6 +26,6 @@ public class AuthToken implements Serializable {
     private String jti;
 
     public boolean valid() {
-        return StringUtils.isNotBlank(accessToken) && StringUtils.isNotBlank(refreshToken) && StringUtils.isNotBlank(jti);
+        return !(StringUtils.isEmpty(accessToken) || StringUtils.isEmpty(refreshToken) || StringUtils.isEmpty(jti));
     }
 }

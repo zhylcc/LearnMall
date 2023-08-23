@@ -1,10 +1,10 @@
 package com.learn.demo.mall.user.service;
 
-import com.learn.demo.mall.user.pojo.AddressPO;
 import com.learn.demo.mall.user.dao.AddressMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.learn.demo.mall.user.pojo.AddressPO;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**

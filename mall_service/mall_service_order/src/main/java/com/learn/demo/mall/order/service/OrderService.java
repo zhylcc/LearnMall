@@ -1,6 +1,6 @@
 package com.learn.demo.mall.order.service;
 
-import com.learn.demo.mall.common.utils.SnowflakeIdUtil;
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.goods.feign.SkuFeign;
 import com.learn.demo.mall.order.dao.OrderItemMapper;
 import com.learn.demo.mall.order.dao.OrderMapper;
@@ -8,9 +8,8 @@ import com.learn.demo.mall.order.enums.*;
 import com.learn.demo.mall.order.pojo.OrderItemPO;
 import com.learn.demo.mall.order.pojo.OrderPO;
 import com.learn.demo.mall.order.response.ListCartResp;
+import com.learn.demo.mall.order.utils.SnowflakeIdUtil;
 import com.learn.demo.mall.user.feign.UserFeign;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +23,7 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    @Value("${cart-key-prefix}")
-    private String cartKeyPrefix;
+    private static final String CART_KEY_PREFIX = KeyConfigUtil.getCartKeyPrefix();
 
     @Resource
     private OrderMapper orderMapper;
@@ -74,7 +72,7 @@ public class OrderService {
         // 增加积分
         userFeign.updatePoints(order.getTotalMoney());
         // 清除购物车缓存
-        redisTemplate.delete(cartKeyPrefix + order.getUsername());
+        redisTemplate.delete(CART_KEY_PREFIX + order.getUsername());
         // 返回订单ID
         return order.getId();
     }

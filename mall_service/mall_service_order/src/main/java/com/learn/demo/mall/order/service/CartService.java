@@ -2,6 +2,7 @@ package com.learn.demo.mall.order.service;
 
 import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.response.Result;
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.goods.feign.SkuFeign;
 import com.learn.demo.mall.goods.feign.SpuFeign;
 import com.learn.demo.mall.goods.pojo.SkuPO;
@@ -10,8 +11,6 @@ import com.learn.demo.mall.order.enums.OrderErrorCodeEnum;
 import com.learn.demo.mall.order.pojo.OrderItemPO;
 import com.learn.demo.mall.order.request.AddCartReq;
 import com.learn.demo.mall.order.response.ListCartResp;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +26,7 @@ import java.util.stream.Collectors;
 @Service
 public class CartService {
 
-    @Value("${cart-key-prefix}")
-    private String cartKeyPrefix;
+    private static final String CART_KEY_PREFIX = KeyConfigUtil.getCartKeyPrefix();
 
     @Resource
     private RedisTemplate<String, Map<String, OrderItemPO>> redisTemplate;
@@ -40,7 +38,7 @@ public class CartService {
     private SpuFeign spuFeign;
 
     public String add(AddCartReq req) {
-        String key = cartKeyPrefix + req.getUsername();
+        String key = CART_KEY_PREFIX + req.getUsername();
         OrderItemPO orderItem = (OrderItemPO) redisTemplate.boundHashOps(key).get(req.getSkuId());
         // 没有缓存数据，新增购物车
         if (Objects.isNull(orderItem)) {
@@ -79,7 +77,7 @@ public class CartService {
 
     public ListCartResp list(String username) {
         ListCartResp resp = new ListCartResp();
-        List<OrderItemPO> items = Objects.requireNonNull(redisTemplate.boundHashOps(cartKeyPrefix + username).values())
+        List<OrderItemPO> items = Objects.requireNonNull(redisTemplate.boundHashOps(CART_KEY_PREFIX + username).values())
                 .stream()
                 .map(item->(OrderItemPO)item)
                 .collect(Collectors.toList());

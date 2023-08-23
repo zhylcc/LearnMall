@@ -1,5 +1,6 @@
 package com.learn.demo.mall.gateway.utils;
 
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.gateway.config.GatewayConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -55,7 +56,7 @@ public class JwtUtil {
     }
 
     private SecretKey generalKey() {
-        byte[] encodedKey = Base64.getDecoder().decode(gatewayConfig.getJwtKey());
+        byte[] encodedKey = Base64.getDecoder().decode(KeyConfigUtil.getSystemJwtKey());
         return new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
     }
 }

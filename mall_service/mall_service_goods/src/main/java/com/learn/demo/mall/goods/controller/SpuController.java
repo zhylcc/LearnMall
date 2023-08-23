@@ -7,10 +7,10 @@ import com.learn.demo.mall.goods.pojo.GoodsPO;
 import com.learn.demo.mall.goods.pojo.SpuPO;
 import com.learn.demo.mall.goods.service.SpuService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.apache.commons.collections.CollectionUtils;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Objects;
 
 /**

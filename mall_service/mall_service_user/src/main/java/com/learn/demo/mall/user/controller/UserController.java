@@ -6,9 +6,10 @@ import com.learn.demo.mall.user.pojo.UserPO;
 import com.learn.demo.mall.user.service.TokenDecodeService;
 import com.learn.demo.mall.user.service.UserService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * @author zh_cr
@@ -45,7 +46,7 @@ public class UserController {
     public Result<Void> updatePoints(@RequestParam Integer points) {
         String username = KeyConfigUtil.getTestUsername();
         if (StringUtils.isBlank(username)) {
-            username = tokenDecodeService.getUserInfo().get("user_name");
+            username = tokenDecodeService.parseClaims().getUsername();
         }
         userService.updatePoints(username, points);
         return Result.success();

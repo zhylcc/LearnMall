@@ -22,11 +22,6 @@ import java.util.Objects;
 public class GatewayConfig {
 
     /**
-     * jwt签发密钥
-     */
-    private String jwtKey;
-
-    /**
      * jwt过期时间，ms
      */
     private Long jwtTimeout = 300000L;

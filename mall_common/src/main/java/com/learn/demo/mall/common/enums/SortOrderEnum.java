@@ -1,4 +1,4 @@
-package com.learn.demo.mall.goods.enums;
+package com.learn.demo.mall.common.enums;
 
 
 /**

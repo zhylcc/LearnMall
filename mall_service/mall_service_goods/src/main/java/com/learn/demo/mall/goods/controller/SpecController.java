@@ -4,9 +4,9 @@ import com.learn.demo.mall.common.response.Result;
 import com.learn.demo.mall.goods.pojo.SpecPO;
 import com.learn.demo.mall.goods.service.CategoryService;
 import com.learn.demo.mall.goods.service.TemplateService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**

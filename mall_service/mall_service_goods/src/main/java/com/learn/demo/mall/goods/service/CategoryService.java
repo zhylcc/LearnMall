@@ -8,10 +8,10 @@ import com.learn.demo.mall.goods.dao.CategoryMapper;
 import com.learn.demo.mall.goods.pojo.CategoryPO;
 import com.learn.demo.mall.goods.request.CategoryExampleReq;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 

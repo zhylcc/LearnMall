@@ -7,11 +7,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 配置Spu相关的rabbitmq
+ * 创建队列、交换机并绑定
+ *
  * @author zh_cr
  */
+@Deprecated
 @Configuration
-public class SpuRabbitmqConfig {
+public class RabbitmqBuildConfig {
 
     // 交换机
     public static final String SPU_MARKETABLE_EXCHANGE = "spuMarketableExchange";  // 商品上、下架
@@ -45,5 +47,4 @@ public class SpuRabbitmqConfig {
     public Binding binding4IndexBatchDelete(@Qualifier(INDEX_BATCH_DELETE_QUEUE) Queue queue, @Qualifier(SPU_MARKETABLE_EXCHANGE) Exchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(SpuMarketableRoutingKeyEnum.DOWN.getKey()).noargs();
     }
-
 }

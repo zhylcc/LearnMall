@@ -1,9 +1,10 @@
 package com.learn.demo.mall.system.utils;
+
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -22,12 +23,6 @@ public class JwtUtil {
      * 有效期，ms
      */
     private static final Long EXPIRE = 30000L;
-
-    /**
-     * 密钥
-     */
-    @Value("${jwt.secretKey}")
-    private String secretKey;
 
     /**
      * 创建token
@@ -61,7 +56,7 @@ public class JwtUtil {
     }
 
     private SecretKey generalKey() {
-        byte[] encodedKey = Base64.getDecoder().decode(secretKey);
+        byte[] encodedKey = Base64.getDecoder().decode(KeyConfigUtil.getSystemJwtKey());
         return new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
     }
 }

@@ -1,6 +1,8 @@
 package com.learn.demo.mall.order.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.TypeReference;
 import com.learn.demo.mall.common.entity.JwtClaims;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.jwt.Jwt;
@@ -10,6 +12,7 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,24 +25,23 @@ public class TokenDecodeService {
     private String publicKey;
 
     /***
-     * 获取用户信息
+     * 解析Token信息
      */
-    public Map<String,String> getUserInfo(){
+    public JwtClaims parseClaims(){
         //获取授权信息
         OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        //令牌解码
-        return readToken(details.getTokenValue());
-    }
-
-    /***
-     * 读取令牌数据
-     * @see JwtClaims
-     */
-    private Map<String,String> readToken(String token){
-        //校验Jwt
-        Jwt jwt = JwtHelper.decodeAndVerify(token, new RsaVerifier(publicKey));
+        //令牌校验并解码
+        Jwt jwt = JwtHelper.decodeAndVerify(details.getTokenValue(), new RsaVerifier(publicKey));
         //获取Jwt原始内容
         String claims = jwt.getClaims();
-        return JSON.parseObject(claims,Map.class);
+        Map<String, String> map = JSON.parseObject(claims, new TypeReference<HashMap<String, String>>(){});
+        return JwtClaims.builder().username(map.get("user_name"))
+                .jti(map.get("jti"))
+                .clientId(map.get("client_id"))
+                .exp(Integer.valueOf(map.get("exp")))
+                .scope(JSONArray.parseArray(map.get("scope"), String.class))
+                .authorities(JSONArray.parseArray(map.get("authorizes"), String.class))
+                .build();
     }
+
 }

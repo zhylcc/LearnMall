@@ -13,7 +13,7 @@ spring:
     name: auth
   devtools:
     livereload:
-      port: 35829
+      enabled: false
   datasource:
     druid: # 集成druid连接池
       driver-class-name: com.mysql.cj.jdbc.Driver

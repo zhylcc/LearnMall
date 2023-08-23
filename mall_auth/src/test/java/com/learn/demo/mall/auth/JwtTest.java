@@ -41,7 +41,7 @@ public class JwtTest {
     @Test
     public void parseJwt() throws IOException {
         // 获取公钥
-        String publicKeyLocation = "public.key";
+        String publicKeyLocation = "key/public.key";
         ClassPathResource publicKeyResource = new ClassPathResource(publicKeyLocation);
         InputStream inputStream = publicKeyResource.getInputStream();
         String publicKey = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);

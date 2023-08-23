@@ -16,6 +16,7 @@
         <module>mall_service_system</module>
         <module>mall_service_user</module>
         <module>mall_service_order</module>
+        <module>mall_service_file</module>
     </modules>
 
     <dependencies>
@@ -27,11 +28,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-<!--        oauth2资源服务-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
     </dependencies>
 

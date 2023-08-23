@@ -1,5 +1,6 @@
 package com.learn.demo.mall.goods.request;
 
+import com.learn.demo.mall.common.enums.SortOrderEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -57,7 +58,7 @@ public class SkuExampleESReq {
 
     /**
      * 排序规则（相关性）：0-升序，1-降序
-     * @see com.learn.demo.mall.goods.enums.SortOrderEnum
+     * @see SortOrderEnum
      */
     private Integer sortOrder;
 

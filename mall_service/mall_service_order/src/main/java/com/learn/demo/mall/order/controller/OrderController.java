@@ -6,8 +6,12 @@ import com.learn.demo.mall.order.pojo.OrderPO;
 import com.learn.demo.mall.order.service.OrderService;
 import com.learn.demo.mall.order.service.TokenDecodeService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -29,7 +33,7 @@ public class OrderController {
     public Result<String> add() {
         String username = KeyConfigUtil.getTestUsername();
         if (StringUtils.isBlank(username)) {
-            username = tokenDecodeService.getUserInfo().get("user_name");
+            username = tokenDecodeService.parseClaims().getUsername();
         }
         OrderPO order = new OrderPO();
         order.setUsername(username);

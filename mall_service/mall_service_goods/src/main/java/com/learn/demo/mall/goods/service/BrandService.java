@@ -10,12 +10,12 @@ import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
 import com.learn.demo.mall.goods.pojo.BrandPO;
 import com.learn.demo.mall.goods.request.BrandExampleReq;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.collections.CollectionUtils;
+import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 

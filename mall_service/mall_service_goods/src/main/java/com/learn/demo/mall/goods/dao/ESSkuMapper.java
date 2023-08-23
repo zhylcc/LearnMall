@@ -1,6 +1,6 @@
 package com.learn.demo.mall.goods.dao;
 
-import com.learn.demo.mall.goods.document.SkuDocument;
+import com.learn.demo.mall.goods.entity.SkuDocument;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.stereotype.Repository;
 

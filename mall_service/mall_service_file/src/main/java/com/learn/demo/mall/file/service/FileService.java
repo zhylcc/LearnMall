@@ -1,15 +1,15 @@
-package com.learn.demo.mall.goods.utils;
+package com.learn.demo.mall.file.service;
 
 import com.github.tobato.fastdfs.domain.conn.FdfsWebServer;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.domain.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
  * @author zh_cr
  */
 @Component
-public class FastDFSUtil {
+public class FileService {
 
     @Resource
     private FastFileStorageClient storageClient;

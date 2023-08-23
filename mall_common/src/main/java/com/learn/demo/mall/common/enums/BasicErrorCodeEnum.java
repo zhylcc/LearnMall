@@ -1,5 +1,7 @@
 package com.learn.demo.mall.common.enums;
 
+import com.learn.demo.mall.common.exception.ErrorCode;
+
 /**
  * 错误异常码
  * @author zh_cr

@@ -16,6 +16,9 @@ import java.util.Objects;
  */
 @Component
 public class FeignInterceptor implements RequestInterceptor {
+
+    private static final String AUTHORIZATION_HEADER = "authorization";
+
     @Override
     public void apply(RequestTemplate requestTemplate) {
         //传递令牌
@@ -27,7 +30,7 @@ public class FeignInterceptor implements RequestInterceptor {
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()){
             String headerName = headerNames.nextElement();
-            if ("authorization".equals(headerName)){
+            if (AUTHORIZATION_HEADER.equalsIgnoreCase(headerName)){
                 String headerValue = request.getHeader(headerName); // Bearer jwt
                 //传递令牌
                 requestTemplate.header(headerName,headerValue);

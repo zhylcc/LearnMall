@@ -1,6 +1,6 @@
 package com.learn.demo.mall.system.utils;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
  * @author zh_cr
  */
 @Component
+@ConfigurationProperties("snowflake")
 public class SnowflakeIdUtil {
     // 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
     private final static long TW_EPOCH = System.currentTimeMillis();
@@ -34,10 +35,8 @@ public class SnowflakeIdUtil {
     // 0，并发控制
     private long sequence = 0L;
 
-    @Value("${snowflake.workerId:0}")
     private long workerId;
 
-    @Value("${snowflake.datacenterId:0}")
     private long datacenterId;
 
     public synchronized long nextId() {

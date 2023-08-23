@@ -10,10 +10,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * 用户微服务
  * @author zh_cr
  */
-@SpringBootApplication(
-        scanBasePackages = {"com.learn.demo.mall"}
-//        , exclude = {SecurityAutoConfiguration.class, ManagementWebSecurityAutoConfiguration.class}
-)
+@SpringBootApplication
 @EnableEurekaClient
 @MapperScan(basePackages = "com.learn.demo.mall.user.dao")
 @Slf4j

@@ -1,4 +1,4 @@
-package com.learn.demo.mall.goods.document;
+package com.learn.demo.mall.goods.entity;
 
 import lombok.Getter;
 import lombok.Setter;

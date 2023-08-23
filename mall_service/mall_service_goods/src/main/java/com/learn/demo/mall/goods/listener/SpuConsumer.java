@@ -5,9 +5,9 @@ import com.learn.demo.mall.goods.service.SkuService;
 import com.learn.demo.mall.goods.service.SpuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +25,7 @@ public class SpuConsumer {
     @Resource
     private SkuService skuService;
 
-    @RabbitListener(queues = "${consumer.spu.queue.importIndex}")
+    @RabbitListener(queues = "#{KeyConfigUtil.getIndexImportQueue()}")
     public void importIndex(String spuId) {
         log.info("收到商品上架消息, spuId: " + spuId);
         List<SkuPO> skuList = spuService.selectSkusBySpuId(spuId);
@@ -34,7 +34,7 @@ public class SpuConsumer {
         log.info("成功新增索引数: " + importCnt);
     }
 
-    @RabbitListener(queues = "${consumer.spu.queue.deleteIndex}")
+    @RabbitListener(queues = "#{KeyConfigUtil.getIndexDeleteQueue()}")
     public void deleteIndex(String spuId) {
         log.info("收到商品下架消息, spuId: " + spuId);
         List<String> skuIds = spuService.selectSkusBySpuId(spuId).stream().map(SkuPO::getId).collect(Collectors.toList());

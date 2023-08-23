@@ -1,5 +1,5 @@
 server:
-  port: 9005
+  port: 9010
 
 eureka:
   client:
@@ -13,6 +13,6 @@ spring:
     name: web
   devtools:
     livereload:
-      port: 35735
+      enabled: false
   main:
     allow-bean-definition-overriding: true

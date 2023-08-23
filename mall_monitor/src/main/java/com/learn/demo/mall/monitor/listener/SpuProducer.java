@@ -1,13 +1,13 @@
 package com.learn.demo.mall.monitor.listener;
 
 import com.alibaba.otter.canal.protocol.CanalEntry;
-import com.learn.demo.mall.monitor.config.SpuRabbitmqConfig;
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.monitor.enums.SpuMarketableRoutingKeyEnum;
 import com.xpand.starter.canal.annotation.CanalEventListener;
 import com.xpand.starter.canal.annotation.ListenPoint;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,12 +36,12 @@ public class SpuProducer {
         if (SpuMarketableRoutingKeyEnum.UP.getStatus().equals(Integer.valueOf(newData.get(COL_MARKETABLE)))
                 && SpuMarketableRoutingKeyEnum.DOWN.getStatus().equals(Integer.valueOf(oldData.get(COL_MARKETABLE)))) {
             // 上架
-            rabbitTemplate.convertAndSend(SpuRabbitmqConfig.SPU_MARKETABLE_EXCHANGE, SpuMarketableRoutingKeyEnum.UP.getKey(), newData.get(COL_ID));
+            rabbitTemplate.convertAndSend(KeyConfigUtil.getIndexImportQueue(), SpuMarketableRoutingKeyEnum.UP.getKey(), newData.get(COL_ID));
         }
         if (SpuMarketableRoutingKeyEnum.DOWN.getStatus().equals(Integer.valueOf(newData.get(COL_MARKETABLE)))
                 && SpuMarketableRoutingKeyEnum.UP.getStatus().equals(Integer.valueOf(oldData.get(COL_MARKETABLE)))) {
             // 下架
-            rabbitTemplate.convertAndSend(SpuRabbitmqConfig.SPU_MARKETABLE_EXCHANGE, SpuMarketableRoutingKeyEnum.DOWN.getKey(), newData.get(COL_ID));
+            rabbitTemplate.convertAndSend(KeyConfigUtil.getIndexDeleteQueue(), SpuMarketableRoutingKeyEnum.DOWN.getKey(), newData.get(COL_ID));
         }
     }
 }

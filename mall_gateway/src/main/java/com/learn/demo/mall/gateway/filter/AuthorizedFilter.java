@@ -14,13 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -45,15 +43,13 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_VALUE_PREFIX = "Bearer ";
 
-
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
 
-        List<String> whiteList = new ArrayList<>(Arrays.asList(gatewayConfig.getWhiteList()));
         // 放行登录请求
-        if (whiteList.contains(request.getURI().getPath())) {
+        if (this.checkInWhiteList(request.getURI().getPath())) {
             return chain.filter(exchange);
         }
 
@@ -73,7 +69,7 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
             }
         }
 
-        // 2. SSO授权服务鉴权
+        // 2. oauth授权服务鉴权
         // 获取cookie中的jti
         String jti = this.getJtiFromCookie(request);
         if (StringUtils.isEmpty(jti)) {
@@ -88,6 +84,17 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
         }
 
         return authenticationFail(response);
+    }
+
+    private boolean checkInWhiteList(String path) {
+        String[] whiteList = gatewayConfig.getWhiteList();
+        AntPathMatcher antPathMatcher = new AntPathMatcher();
+        for (String pattern: whiteList) {
+            if (antPathMatcher.match(pattern, path)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

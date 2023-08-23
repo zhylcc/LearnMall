@@ -7,9 +7,9 @@ import com.learn.demo.mall.goods.pojo.SkuPO;
 import com.learn.demo.mall.goods.request.SkuExampleESReq;
 import com.learn.demo.mall.goods.service.SkuService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**

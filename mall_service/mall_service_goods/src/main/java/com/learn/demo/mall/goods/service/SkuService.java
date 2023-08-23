@@ -1,16 +1,16 @@
 package com.learn.demo.mall.goods.service;
 
 import com.alibaba.fastjson.JSON;
+import com.learn.demo.mall.common.enums.SortOrderEnum;
 import com.learn.demo.mall.common.exception.BaseBizException;
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.goods.dao.ESSkuMapper;
 import com.learn.demo.mall.goods.dao.SkuMapper;
-import com.learn.demo.mall.goods.document.SkuDocument;
+import com.learn.demo.mall.goods.entity.SkuDocument;
 import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
-import com.learn.demo.mall.goods.enums.SortOrderEnum;
 import com.learn.demo.mall.goods.pojo.SkuPO;
 import com.learn.demo.mall.goods.request.SkuExampleESReq;
 import com.learn.demo.mall.order.pojo.OrderItemPO;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -23,8 +23,6 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -34,6 +32,7 @@ import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPa
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -59,8 +58,7 @@ public class SkuService {
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Value("${cart-key-prefix}")
-    private String cartKeyPrefix;
+    private static final String CART_KEY_PREFIX = KeyConfigUtil.getCartKeyPrefix();
 
     /**
      * 创建索引
@@ -151,7 +149,7 @@ public class SkuService {
             boolQuery.filter(QueryBuilders.rangeQuery("price").lte(req.getMaxPrice()));
         }
         // 按规格过滤
-        if (Objects.nonNull(req.getSpecExample()) && CollectionUtils.isNotEmpty(req.getSpecExample().entrySet())) {
+        if (Objects.nonNull(req.getSpecExample()) && !CollectionUtils.isEmpty(req.getSpecExample().entrySet())) {
             req.getSpecExample().forEach((key, value) -> {
                 boolQuery.filter(QueryBuilders.termQuery("specMap."+key+".keyword", value));
             });
@@ -217,7 +215,7 @@ public class SkuService {
 
     public Integer reduce(String username) {
         AtomicInteger delta = new AtomicInteger();
-        Objects.requireNonNull(redisTemplate.boundHashOps(cartKeyPrefix + username).values())
+        Objects.requireNonNull(redisTemplate.boundHashOps(CART_KEY_PREFIX + username).values())
                 .forEach(item->{
                     int count = skuMapper.reduce((OrderItemPO) item);
                     if (count <= 0) {

@@ -6,8 +6,9 @@ import com.learn.demo.mall.order.feign.OrderFeign;
 import com.learn.demo.mall.order.response.ListCartResp;
 import com.learn.demo.mall.user.feign.AddressFeign;
 import com.learn.demo.mall.web.response.WOrderResp;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 
 /**

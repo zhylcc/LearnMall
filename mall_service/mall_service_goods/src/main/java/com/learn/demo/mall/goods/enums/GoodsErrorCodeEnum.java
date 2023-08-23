@@ -1,6 +1,6 @@
 package com.learn.demo.mall.goods.enums;
 
-import com.learn.demo.mall.common.enums.ErrorCode;
+import com.learn.demo.mall.common.exception.ErrorCode;
 
 /**
  * @author zh_cr
@@ -15,9 +15,6 @@ public enum GoodsErrorCodeEnum implements ErrorCode {
     BIZ_ES_IMPORT_SKU_ERROR(10401, "商品管理导入sku索引异常"),
     BIZ_ES_DELETE_SKU_ERROR(10402, "商品管理删除sku索引异常"),
     BIZ_SKU_LACK(10403, "商品Sku库存不足"),
-    BIZ_FAST_DFS_WARNING(10500, "FastDFS异常提示"),
-    BIZ_FAST_DFS_UPLOAD_ERROR(10501, "FastDFS上传文件出错"),
-    BIZ_FAST_DFS_DOWNLOAD_ERROR(10502, "FastDFS下载文件出错"),
     ;
 
     private final Integer code;

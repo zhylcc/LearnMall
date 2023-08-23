@@ -1,7 +1,7 @@
 package com.learn.demo.mall.goods.config;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -18,23 +18,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+
 /**
  * 资源服务器配置
  * @author zh_cr
  */
 @Configuration
+@ConfigurationProperties("resource")
 @EnableResourceServer
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Slf4j
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     // 公钥位置
-    @Value("${resource.public-key}")
     private String keyLocation;
 
     // 放行url
-    @Value("${resource.ignoring-urls:}")
-    private String[] ignoringUrls;
+    private String[] whiteList;
 
     /**
      * 使用公钥解析JWT
@@ -51,14 +51,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return new JwtTokenStore(jwtAccessTokenConverter());
     }
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers(ignoringUrls).permitAll()  // 放行请求
-                .anyRequest().authenticated();  // 鉴权请求
-    }
-
-    private String getPublicKey() {
+    @Bean(name = "publicKey")
+    public String getPublicKey() {
         ClassPathResource publicKeyResource = new ClassPathResource(keyLocation);
         String publicKey;
         InputStream inputStream;
@@ -70,5 +64,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
             publicKey = null;
         }
         return publicKey;
+    }
+
+    @Override
+    public void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers(whiteList).permitAll()  // 放行请求
+                .anyRequest().authenticated();  // 鉴权请求
     }
 }

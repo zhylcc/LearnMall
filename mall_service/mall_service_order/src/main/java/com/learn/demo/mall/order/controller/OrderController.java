@@ -2,14 +2,12 @@ package com.learn.demo.mall.order.controller;
 
 import com.learn.demo.mall.common.response.Result;
 import com.learn.demo.mall.common.utils.KeyConfigUtil;
+import com.learn.demo.mall.order.pojo.OrderExtPO;
 import com.learn.demo.mall.order.pojo.OrderPO;
 import com.learn.demo.mall.order.service.OrderService;
 import com.learn.demo.mall.order.service.TokenDecodeService;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -38,5 +36,10 @@ public class OrderController {
         OrderPO order = new OrderPO();
         order.setUsername(username);
         return Result.success(orderService.add(order));
+    }
+
+    @GetMapping("/{id}")
+    public Result<OrderExtPO> queryById(@PathVariable String id) {
+        return Result.success(orderService.queryById(id));
     }
 }

@@ -29,12 +29,6 @@ spring:
   rabbitmq:
     host: localhost
 
-# 打印mybatis执行的sql语句
-#mybatis:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-# 雪花算法工具类配置
 snowflake:
   datacenter-id: 1
   worker-id: 1
@@ -46,3 +40,5 @@ resource:
     - /images/**
     - /js/**
     - /css/**
+    - /user/info/load/**
+    - /user/info/login

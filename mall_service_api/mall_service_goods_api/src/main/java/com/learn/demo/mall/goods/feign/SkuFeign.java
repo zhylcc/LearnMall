@@ -6,7 +6,7 @@ import com.learn.demo.mall.goods.pojo.SkuPO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -18,6 +18,6 @@ public interface SkuFeign {
     @GetMapping("/goods/sku/{id}")
     Result<SkuPO> queryById(@PathVariable String id);
 
-    @PostMapping("/goods/sku/reduce")
+    @PutMapping("/goods/sku/reduce")
     Result<Integer> reduce(@RequestParam String username);
 }

@@ -25,7 +25,7 @@ public class SpuConsumer {
     @Resource
     private SkuService skuService;
 
-    @RabbitListener(queues = "#{KeyConfigUtil.getIndexImportQueue()}")
+    @RabbitListener(queues = "indexImportQueue")
     public void importIndex(String spuId) {
         log.info("收到商品上架消息, spuId: " + spuId);
         List<SkuPO> skuList = spuService.selectSkusBySpuId(spuId);
@@ -34,7 +34,7 @@ public class SpuConsumer {
         log.info("成功新增索引数: " + importCnt);
     }
 
-    @RabbitListener(queues = "#{KeyConfigUtil.getIndexDeleteQueue()}")
+    @RabbitListener(queues = "indexDeleteQueue")
     public void deleteIndex(String spuId) {
         log.info("收到商品下架消息, spuId: " + spuId);
         List<String> skuIds = spuService.selectSkusBySpuId(spuId).stream().map(SkuPO::getId).collect(Collectors.toList());

@@ -5,8 +5,7 @@ import com.learn.demo.mall.user.pojo.UserPO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
 
 /**
  * @author zh_cr
@@ -17,6 +16,6 @@ public interface UserFeign {
     @GetMapping("/user/info/load/{username}")
     Result<UserPO> loadByUsername(@PathVariable String username);
 
-    @PostMapping("/user/info/points")
-    public Result<Void> updatePoints(@RequestParam Integer points);
+    @PutMapping("/user/info/points/{points}")
+    Result<Void> updatePoints(@PathVariable Integer points);
 }

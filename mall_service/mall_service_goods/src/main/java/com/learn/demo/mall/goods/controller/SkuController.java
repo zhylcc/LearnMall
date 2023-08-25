@@ -60,7 +60,7 @@ public class SkuController {
         return Result.success(skuService.queryById(id));
     }
 
-    @PostMapping("/reduce")
+    @PutMapping("/reduce")
     public Result<Integer> reduce(@RequestParam String username) {
         return Result.success(skuService.reduce(username));
     }

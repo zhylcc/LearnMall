@@ -1,6 +1,7 @@
 package com.learn.demo.mall.system.service;
 
 import com.learn.demo.mall.common.exception.BaseBizException;
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.system.dao.AdminMapper;
 import com.learn.demo.mall.system.enums.SystemErrorCodeEnum;
 import com.learn.demo.mall.system.pojo.AdminPO;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
 
 /**
@@ -54,7 +56,7 @@ public class AdminService {
     }
 
 
-    public String login(AdminPO admin) {
+    public void login(AdminPO admin, HttpServletResponse response) {
         AdminPO adminResult = queryAdminByLoginName(admin.getLoginName());
         if (Objects.isNull(adminResult)) {
             throw new BaseBizException("用户不存在", SystemErrorCodeEnum.BIZ_ADMIN_NOT_EXIST);
@@ -62,6 +64,18 @@ public class AdminService {
         if (!BCrypt.checkpw(admin.getPassword(), adminResult.getPassword())) {
             throw new BaseBizException("用户名或密码错误", SystemErrorCodeEnum.BIZ_ADMIN_MISMATCH);
         }
-        return jwtUtil.createToken(String.valueOf(snowflakeIdUtil.nextId()), "/system/admin/login");
+        // 在header中设置token
+        String token = jwtUtil.createToken(String.valueOf(snowflakeIdUtil.nextId()), "/system/admin/login");
+        response.addHeader(KeyConfigUtil.getTokenHeader(), token);
+    }
+
+    public AdminPO queryByUsername(String username) {
+        AdminPO example = new AdminPO();
+        example.setLoginName(username);
+        AdminPO admin = adminMapper.selectOne(example);
+        if (Objects.isNull(admin)) {
+            throw new BaseBizException("管理员不存在", SystemErrorCodeEnum.BIZ_ADMIN_NOT_EXIST);
+        }
+        return admin;
     }
 }

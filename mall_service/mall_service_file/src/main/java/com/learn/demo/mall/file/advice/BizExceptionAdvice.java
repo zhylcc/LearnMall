@@ -1,4 +1,4 @@
-package com.learn.demo.mall.auth.advice;
+package com.learn.demo.mall.file.advice;
 
 import com.learn.demo.mall.common.enums.BasicErrorCodeEnum;
 import com.learn.demo.mall.common.exception.BaseBizException;

@@ -19,17 +19,18 @@ public class RabbitmqBuildConfig {
     public static final String SPU_MARKETABLE_EXCHANGE = "spuMarketableExchange";  // 商品上、下架
 
     // 消息队列
-    public static final String INDEX_BATCH_IMPORT_QUEUE = "indexBatchImportQueue";  // 批量导入相关sku索引
-    public static final String INDEX_BATCH_DELETE_QUEUE = "indexBatchDeleteQueue";  // 批量删除相关sku索引
 
-    @Bean(INDEX_BATCH_IMPORT_QUEUE)
+    public static final String INDEX_IMPORT_QUEUE = "indexImportQueue";  // 批量导入相关sku索引
+    public static final String INDEX_DELETE_QUEUE = "indexDeleteQueue";  // 批量删除相关sku索引
+
+    @Bean(INDEX_IMPORT_QUEUE)
     public Queue indexBatchImportQueue() {
-        return new Queue(INDEX_BATCH_IMPORT_QUEUE);
+        return new Queue(INDEX_IMPORT_QUEUE);
     }
 
-    @Bean(INDEX_BATCH_DELETE_QUEUE)
+    @Bean(INDEX_DELETE_QUEUE)
     public Queue indexBatchDeleteQueue() {
-        return new Queue(INDEX_BATCH_DELETE_QUEUE);
+        return new Queue(INDEX_DELETE_QUEUE);
     }
 
 
@@ -39,12 +40,12 @@ public class RabbitmqBuildConfig {
     }
 
     @Bean
-    public Binding binding4IndexBatchImport(@Qualifier(INDEX_BATCH_IMPORT_QUEUE) Queue queue, @Qualifier(SPU_MARKETABLE_EXCHANGE) Exchange exchange) {
+    public Binding binding4IndexBatchImport(@Qualifier(INDEX_IMPORT_QUEUE) Queue queue, @Qualifier(SPU_MARKETABLE_EXCHANGE) Exchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(SpuMarketableRoutingKeyEnum.UP.getKey()).noargs();
     }
 
     @Bean
-    public Binding binding4IndexBatchDelete(@Qualifier(INDEX_BATCH_DELETE_QUEUE) Queue queue, @Qualifier(SPU_MARKETABLE_EXCHANGE) Exchange exchange) {
+    public Binding binding4IndexBatchDelete(@Qualifier(INDEX_DELETE_QUEUE) Queue queue, @Qualifier(SPU_MARKETABLE_EXCHANGE) Exchange exchange) {
         return BindingBuilder.bind(queue).to(exchange).with(SpuMarketableRoutingKeyEnum.DOWN.getKey()).noargs();
     }
 }

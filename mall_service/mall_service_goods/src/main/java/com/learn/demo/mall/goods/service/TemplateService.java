@@ -3,10 +3,10 @@ package com.learn.demo.mall.goods.service;
 import com.google.common.collect.Lists;
 import com.learn.demo.mall.goods.dao.TemplateMapper;
 import com.learn.demo.mall.goods.pojo.SpecPO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.apache.commons.collections.CollectionUtils;
+import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**

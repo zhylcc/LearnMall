@@ -24,3 +24,7 @@ spring:
 snowflake:
   datacenterId: 3
   workerId: 1
+
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

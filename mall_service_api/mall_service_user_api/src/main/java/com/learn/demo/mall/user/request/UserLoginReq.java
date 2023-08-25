@@ -1,4 +1,4 @@
-package com.learn.demo.mall.auth.request;
+package com.learn.demo.mall.user.request;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import lombok.Data;
  * @author zh_cr
  */
 @Data
-public class AuthLoginReq {
+public class UserLoginReq {
 
     /**
      * 客户端ID

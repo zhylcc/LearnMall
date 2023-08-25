@@ -25,6 +25,9 @@ import java.util.Objects;
 public class FileController {
 
     @Resource
+    private HttpServletResponse response;
+
+    @Resource
     private FileService fileService;
 
     @PostMapping
@@ -41,7 +44,7 @@ public class FileController {
     }
 
     @GetMapping
-    public Result<Void> downloadFile(@RequestParam String fileName, Object response) throws IOException {
+    public void downloadFile(@RequestParam String fileName) throws IOException {
         byte[] bytes;
         try {
             bytes = fileService.downloadFile(fileName);
@@ -50,10 +53,9 @@ public class FileController {
         }
         ServletOutputStream outputStream = null;
         try {
-            HttpServletResponse resp = (HttpServletResponse) response;
-            resp.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
-            resp.setCharacterEncoding("UTF-8");
-            outputStream = resp.getOutputStream();
+            response.setHeader("Content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+            response.setCharacterEncoding("UTF-8");
+            outputStream = response.getOutputStream();
             outputStream.write(bytes);
         } catch (Exception e) {
             throw new BaseBizException("文件微服务未知异常", BasicErrorCodeEnum.UNKNOWN_ERROR);
@@ -63,7 +65,6 @@ public class FileController {
                 outputStream.close();
             }
         }
-        return Result.success();
     }
 
     @DeleteMapping

@@ -1,5 +1,7 @@
 package com.learn.demo.mall.goods.config;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,8 @@ import java.nio.charset.StandardCharsets;
  * 资源服务器配置
  * @author zh_cr
  */
+@Getter
+@Setter
 @Configuration
 @ConfigurationProperties("resource")
 @EnableResourceServer

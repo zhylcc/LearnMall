@@ -7,10 +7,38 @@ package com.learn.demo.mall.common.utils;
 public class KeyConfigUtil {
 
     /**
+     * 微服务网关鉴权开关
+     */
+    public static boolean isNeedAuthorized() {
+        return true;
+    }
+
+    /**
+     * 跳转登录开关
+     */
+    public static boolean isRedirect() {
+        return false;
+    }
+
+    /**
      * 测试时的用户名
      */
     public static String getTestUsername() {
-        return "test";
+        return "";
+    }
+
+    /**
+     * 设置token的header名称
+     */
+    public static String getTokenHeader() {
+        return "token";
+    }
+
+    /**
+     * 设置jti的cookie名称
+     */
+    public static String getJtiCookieName() {
+        return "jti";
     }
 
     /**
@@ -21,7 +49,7 @@ public class KeyConfigUtil {
     }
 
     /**
-     * 系统管理微服务签发jwt是的密钥
+     * 系统管理微服务签发jwt的密钥
      */
     public static String getSystemJwtKey() {
         return "mallSystem";
@@ -30,14 +58,22 @@ public class KeyConfigUtil {
     /**
      * 索引导入队列
      */
-    public static String getIndexImportQueue() {
-        return "indexBatchQueue";
+    public static String getSpuMarketableExchange() {
+        return "spuMarketableExchange";
+    }
+
+
+    /**
+     * web前台域名
+     */
+    public static String getWebDomain() {
+        return "http://localhost";
     }
 
     /**
-     * 索引删除队列
+     * 授权服务器id
      */
-    public static String getIndexDeleteQueue() {
-        return "indexDeleteQueue";
+    public static String getAuthInstanceId() {
+        return "auth";
     }
 }

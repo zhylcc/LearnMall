@@ -1,10 +1,8 @@
 package com.learn.demo.mall.web;
 
-import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
@@ -14,10 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * 接入网关但没有接入oauth2
  * @author zh_cr
  */
-@SpringBootApplication(
-        scanBasePackages = {"com.learn.demo.mall"},
-        exclude = {DataSourceAutoConfiguration.class, DruidDataSourceAutoConfigure.class}
-)
+@SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients(basePackages = {"com.learn.demo.mall.order.feign", "com.learn.demo.mall.user.feign"})
 @Slf4j

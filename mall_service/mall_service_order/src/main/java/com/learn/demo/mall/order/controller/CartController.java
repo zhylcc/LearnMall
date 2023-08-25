@@ -25,7 +25,7 @@ public class CartController {
     @Resource
     private TokenDecodeService tokenDecodeService;
 
-    @PostMapping
+    @PutMapping
     public Result<String> add(@RequestBody AddCartReq req) {
         String username = KeyConfigUtil.getTestUsername();
         if (StringUtils.isBlank(username)) {

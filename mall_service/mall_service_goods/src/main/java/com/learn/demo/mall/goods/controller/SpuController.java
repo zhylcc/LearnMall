@@ -56,4 +56,10 @@ public class SpuController {
     public Result<SpuPO> queryById(@PathVariable String id) {
         return Result.success(spuService.queryById(id));
     }
+
+    @PutMapping("/{id}")
+    public Result<Void> toggleMarketable(@PathVariable String id, @RequestParam String marketable) {
+        spuService.toggleMarketable(id, marketable);
+        return Result.success();
+    }
 }

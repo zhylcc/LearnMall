@@ -65,11 +65,6 @@ spring:
           uri: lb://file
           predicates:
             - Path=/file/**
-        # 授权微服务
-        - id: auth
-          uri: lb://auth
-          predicates:
-            - Path=/auth/**
   redis:
     host: localhost
 
@@ -77,5 +72,10 @@ gateway:
   black-list:  # 黑名单
     - 192.168.200.1
   white-list:  # 白名单
+    - /images/**
+    - /js/**
+    - /css/**
     - /system/admin/login
-    - /auth/login
+    - /user/info/login
+    - /user/info/load/**
+    - /file/**

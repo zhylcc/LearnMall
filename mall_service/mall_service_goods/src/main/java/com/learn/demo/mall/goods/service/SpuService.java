@@ -2,17 +2,19 @@ package com.learn.demo.mall.goods.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.learn.demo.mall.goods.utils.SnowflakeIdUtil;
+import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.goods.dao.*;
+import com.learn.demo.mall.goods.enums.GoodsErrorCodeEnum;
 import com.learn.demo.mall.goods.enums.SpuStatusEnum;
 import com.learn.demo.mall.goods.pojo.*;
+import com.learn.demo.mall.goods.utils.SnowflakeIdUtil;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -114,7 +116,7 @@ public class SpuService {
         SpuPO spu = spuMapper.selectByPrimaryKey(id);
         // （逻辑）删除前判断商品是否存在且处于下架状态
         if (Objects.isNull(spu) || Objects.equals(spu.getIsMarketable(), SpuStatusEnum.MARKETABLE.getValue())) {
-            return;
+            throw new BaseBizException("当前商品状态不可删除", GoodsErrorCodeEnum.BIZ_SPU_CANNOT_DELETE);
         }
         spu.setIsDelete(SpuStatusEnum.DELETE.getValue());
         spu.setStatus(SpuStatusEnum.NOT_CHECKED.getValue());
@@ -130,5 +132,14 @@ public class SpuService {
 
     public SpuPO queryById(String id) {
         return spuMapper.selectByPrimaryKey(id);
+    }
+
+    public void toggleMarketable(String id, String marketable) {
+        SpuPO example = spuMapper.selectByPrimaryKey(id);
+        if (Objects.isNull(example)) {
+            return;
+        }
+        example.setIsMarketable(marketable);
+        spuMapper.updateByPrimaryKeySelective(example);
     }
 }

@@ -5,6 +5,7 @@ import com.learn.demo.mall.goods.feign.SkuFeign;
 import com.learn.demo.mall.order.dao.OrderItemMapper;
 import com.learn.demo.mall.order.dao.OrderMapper;
 import com.learn.demo.mall.order.enums.*;
+import com.learn.demo.mall.order.pojo.OrderExtPO;
 import com.learn.demo.mall.order.pojo.OrderItemPO;
 import com.learn.demo.mall.order.pojo.OrderPO;
 import com.learn.demo.mall.order.response.ListCartResp;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author zh_cr
@@ -75,5 +77,19 @@ public class OrderService {
         redisTemplate.delete(CART_KEY_PREFIX + order.getUsername());
         // 返回订单ID
         return order.getId();
+    }
+
+    public OrderExtPO queryById(String id) {
+        OrderPO order = orderMapper.selectByPrimaryKey(id);
+        if (Objects.isNull(order)) {
+            return null;
+        }
+        OrderItemPO example = new OrderItemPO();
+        example.setOrderId(id);
+        List<OrderItemPO> items = orderItemMapper.select(example);
+        OrderExtPO orderExt = new OrderExtPO();
+        orderExt.setOrder(order);
+        orderExt.setItems(items);
+        return orderExt;
     }
 }

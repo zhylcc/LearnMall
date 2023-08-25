@@ -15,6 +15,7 @@ public enum GoodsErrorCodeEnum implements ErrorCode {
     BIZ_ES_IMPORT_SKU_ERROR(10401, "商品管理导入sku索引异常"),
     BIZ_ES_DELETE_SKU_ERROR(10402, "商品管理删除sku索引异常"),
     BIZ_SKU_LACK(10403, "商品Sku库存不足"),
+    BIZ_SPU_CANNOT_DELETE(10404, "商品不可删除"),
     ;
 
     private final Integer code;

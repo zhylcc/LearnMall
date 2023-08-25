@@ -11,7 +11,6 @@ import com.learn.demo.mall.goods.pojo.BrandPO;
 import com.learn.demo.mall.goods.request.BrandExampleReq;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
@@ -69,7 +68,6 @@ public class BrandService {
         return brandMapper.selectByIds(brandIds);
     }
 
-    @Transactional
     public Integer saveBrand(BrandPO brand) {
         brand.setId(null);
         if (Objects.nonNull(queryBrandByName(brand.getName()))) {
@@ -83,12 +81,11 @@ public class BrandService {
         brandMapper.deleteByPrimaryKey(id);
     }
 
-    @Transactional
     public void updateBrand(BrandPO brand) {
         BrandPO oldBrand = queryBrandByName(brand.getName());
         if (Objects.nonNull(oldBrand) && !oldBrand.getId().equals(brand.getId())) {
             throw new BaseBizException("品牌名重复", GoodsErrorCodeEnum.BIZ_BRAND_WARNING);
         }
-        brandMapper.updateByPrimaryKey(brand);
+        brandMapper.updateByPrimaryKeySelective(brand);
     }
 }

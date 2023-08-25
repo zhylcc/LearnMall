@@ -1,5 +1,7 @@
 package com.learn.demo.mall.goods.utils;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -7,6 +9,8 @@ import org.springframework.stereotype.Component;
  * 雪花算法工具类
  * @author zh_cr
  */
+@Getter
+@Setter
 @Component
 @ConfigurationProperties("snowflake")
 public class SnowflakeIdUtil {
@@ -71,13 +75,5 @@ public class SnowflakeIdUtil {
 
     private long timeGen() {
         return System.currentTimeMillis();
-    }
-
-    public void setWorkerId(long workerId) {
-        this.workerId = workerId;
-    }
-
-    public void setDatacenterId(long datacenterId) {
-        this.datacenterId = datacenterId;
     }
 }

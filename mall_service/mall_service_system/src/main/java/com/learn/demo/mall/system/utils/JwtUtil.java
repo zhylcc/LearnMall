@@ -5,6 +5,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -16,13 +18,15 @@ import java.util.Date;
  * JWT工具类
  * @author zh_cr
  */
+@Getter
+@Setter
 @Component
 public class JwtUtil {
 
     /**
      * 有效期，ms
      */
-    private static final Long EXPIRE = 30000L;
+    private static final Long EXPIRE = 300000L;
 
     /**
      * 创建token

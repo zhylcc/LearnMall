@@ -36,12 +36,12 @@ public class SpuProducer {
         if (SpuMarketableRoutingKeyEnum.UP.getStatus().equals(Integer.valueOf(newData.get(COL_MARKETABLE)))
                 && SpuMarketableRoutingKeyEnum.DOWN.getStatus().equals(Integer.valueOf(oldData.get(COL_MARKETABLE)))) {
             // 上架
-            rabbitTemplate.convertAndSend(KeyConfigUtil.getIndexImportQueue(), SpuMarketableRoutingKeyEnum.UP.getKey(), newData.get(COL_ID));
+            rabbitTemplate.convertAndSend(KeyConfigUtil.getSpuMarketableExchange(), SpuMarketableRoutingKeyEnum.UP.getKey(), newData.get(COL_ID));
         }
         if (SpuMarketableRoutingKeyEnum.DOWN.getStatus().equals(Integer.valueOf(newData.get(COL_MARKETABLE)))
                 && SpuMarketableRoutingKeyEnum.UP.getStatus().equals(Integer.valueOf(oldData.get(COL_MARKETABLE)))) {
             // 下架
-            rabbitTemplate.convertAndSend(KeyConfigUtil.getIndexDeleteQueue(), SpuMarketableRoutingKeyEnum.DOWN.getKey(), newData.get(COL_ID));
+            rabbitTemplate.convertAndSend(KeyConfigUtil.getSpuMarketableExchange(), SpuMarketableRoutingKeyEnum.DOWN.getKey(), newData.get(COL_ID));
         }
     }
 }

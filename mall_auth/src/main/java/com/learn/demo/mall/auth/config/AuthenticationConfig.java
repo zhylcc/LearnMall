@@ -2,7 +2,6 @@ package com.learn.demo.mall.auth.config;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +13,6 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -44,27 +42,6 @@ public class AuthenticationConfig {
      * 用户授权
      */
     private String[] authorities;
-
-    /**
-     * jwt在redis中的过期时间
-     */
-    private Integer jwtTimeout;
-
-    /**
-     * jti cookie作用域
-     */
-    private String cookieDomain;
-
-    /**
-     * jti cookie过期时间
-     */
-    private Integer cookieMaxAge;
-
-    /**
-     * 服务实例ID
-     */
-    @Value("${spring.application.name}")
-    private String instanceId;
 
     /**
      * oauth2数据源
@@ -123,13 +100,5 @@ public class AuthenticationConfig {
     @Bean
     public TokenStore oauthTokenStore() {
         return new JwtTokenStore(oauthJwtAccessTokenConverter());
-    }
-
-    /**
-     * REST请求模板类
-     */
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
     }
 }

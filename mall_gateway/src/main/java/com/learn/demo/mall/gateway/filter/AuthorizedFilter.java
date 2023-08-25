@@ -1,5 +1,6 @@
 package com.learn.demo.mall.gateway.filter;
 
+import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.gateway.config.GatewayConfig;
 import com.learn.demo.mall.gateway.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -38,8 +39,6 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
     @Resource
     private GatewayConfig gatewayConfig;
 
-    private static final String TOKEN_HEADER = "token";
-    private static final String JTI_COOKIE_KEY = "jti";
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_VALUE_PREFIX = "Bearer ";
 
@@ -49,13 +48,13 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
         ServerHttpResponse response = exchange.getResponse();
 
         // 放行登录请求
-        if (this.checkInWhiteList(request.getURI().getPath())) {
+        if (!KeyConfigUtil.isNeedAuthorized() || this.checkInWhiteList(request.getURI().getPath())) {
             return chain.filter(exchange);
         }
 
         // 1. 系统管理服务鉴权
         // 获取并验证token
-         String token = request.getHeaders().getFirst(TOKEN_HEADER);
+         String token = request.getHeaders().getFirst(KeyConfigUtil.getTokenHeader());
         if (StringUtils.isNotBlank(token)) {
             try {
                 Claims claims = jwtUtil.parseToken(token);
@@ -103,7 +102,7 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
     }
 
     private String getJtiFromCookie(ServerHttpRequest request) {
-        HttpCookie cookie = request.getCookies().getFirst(JTI_COOKIE_KEY);
+        HttpCookie cookie = request.getCookies().getFirst(KeyConfigUtil.getJtiCookieName());
         if (Objects.isNull(cookie)) {
             return null;
         }
@@ -116,7 +115,13 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
 
     private Mono<Void> authenticationFail(ServerHttpResponse response) {
         // 鉴权失败
-        response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        if (KeyConfigUtil.isRedirect()) {
+            response.setStatusCode(HttpStatus.SEE_OTHER);
+            response.getHeaders().set("Location", KeyConfigUtil.getWebDomain() + "/web/user/toLogin");
+        }
+        else {
+            response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        }
         return response.setComplete();
     }
 

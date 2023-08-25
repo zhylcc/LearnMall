@@ -10,7 +10,7 @@ eureka:
 
 spring:
   application:
-    name: goods
+    name: file
   devtools:
     livereload:
       port: 35730

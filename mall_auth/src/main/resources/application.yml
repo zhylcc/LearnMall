@@ -33,11 +33,9 @@ authentication:
     alias: mall  # 密钥别名
     key-pass: keypass  # 密钥密码
   white-list:
-    - /auth/login
-    - /auth/logout
+    - /images/**
+    - /js/**
+    - /css/**
+    - /user/info/login
   authorities:
     - admin
-  jwt-timeout: 1200  # redis过期时间，s
-  cookie-domain: localhost  # cookie域名
-  cookie-max-age: -1  # cookie过期时间，-1表示浏览器关闭才销毁
-

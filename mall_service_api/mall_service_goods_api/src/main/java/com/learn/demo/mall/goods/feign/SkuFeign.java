@@ -20,4 +20,7 @@ public interface SkuFeign {
 
     @PutMapping("/goods/sku/reduce")
     Result<Integer> reduce(@RequestParam String username);
+
+    @PutMapping("/goods/sku/resume")
+    Result<Integer> resume(@RequestParam String id, @RequestParam Integer num);
 }

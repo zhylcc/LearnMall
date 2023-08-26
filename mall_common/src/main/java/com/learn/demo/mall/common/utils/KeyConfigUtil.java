@@ -56,12 +56,35 @@ public class KeyConfigUtil {
     }
 
     /**
-     * 索引导入队列
+     * 商品上下架与索引同步
      */
-    public static String getSpuMarketableExchange() {
-        return "spuMarketableExchange";
-    }
+    public static final String SPU_MARKETABLE_EXCHANGE = "spuMarketableExchange";  // 商品上、下架
+    public static final String INDEX_IMPORT_QUEUE = "indexImportQueue";  // 批量导入相关sku索引
+    public static final String INDEX_DELETE_QUEUE = "indexDeleteQueue";  // 批量删除相关sku索引
+    public static final String INDEX_IMPORT_KEY = "up";
+    public static final String INDEX_DELETE_KEY = "down";
 
+    /**
+     * 增加用户积分
+     */
+    public static final String USER_ADD_POINTS_EXCHANGE = "userAddPointsExchange";  // 用户增加积分
+    public static final String TO_ADD_POINTS_QUEUE = "toAddPointsQueue";  // 增加积分
+    public static final String FINISH_ADD_POINTS_QUEUE = "finishAddPointsQueue";  // 增加积分完成
+    public static final String TO_ADD_POINTS_KEY = "to";
+    public static final String FINISH_ADD_POINTS_KEY = "finish";
+
+    /**
+     * 订单超时处理
+     */
+    public static final String ORDER_TIMEOUT_QUEUE = "orderTimeoutQueue";
+    public static final String ORDER_CREATE_QUEUE = "orderCreateQueue";
+
+    /**
+     * 积分任务缓存过期时间，s
+     */
+    public static Long getTaskRedisExpire() {
+        return 30L;
+    }
 
     /**
      * web前台域名
@@ -75,5 +98,14 @@ public class KeyConfigUtil {
      */
     public static String getAuthInstanceId() {
         return "auth";
+    }
+
+    /**
+     * 默认订单支付状态
+     * SUCCESS
+     * NOT_PAY
+     */
+    public static String getDefaultTradeStatus() {
+        return "SUCCESS";
     }
 }

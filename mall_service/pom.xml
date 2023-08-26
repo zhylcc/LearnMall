@@ -17,6 +17,7 @@
         <module>mall_service_user</module>
         <module>mall_service_order</module>
         <module>mall_service_file</module>
+        <module>mall_service_pay</module>
     </modules>
 
     <dependencies>

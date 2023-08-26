@@ -32,6 +32,7 @@ import org.springframework.data.elasticsearch.core.aggregation.impl.AggregatedPa
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -213,6 +214,7 @@ public class SkuService {
         return skuMapper.selectByPrimaryKey(id);
     }
 
+    @Transactional
     public Integer reduce(String username) {
         AtomicInteger delta = new AtomicInteger();
         Objects.requireNonNull(redisTemplate.boundHashOps(CART_KEY_PREFIX + username).values())
@@ -224,5 +226,9 @@ public class SkuService {
                     delta.addAndGet(count);
                 });
         return delta.get();
+    }
+
+    public Integer resumeStock(String id, Integer num) {
+        return skuMapper.increase(id, num);
     }
 }

@@ -1,11 +1,16 @@
 package com.learn.demo.mall.user.service;
 
+import com.alibaba.fastjson.JSON;
+import com.learn.demo.mall.common.entity.AddPointsTask;
 import com.learn.demo.mall.common.entity.AuthToken;
 import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.utils.KeyConfigUtil;
+import com.learn.demo.mall.order.pojo.TaskPO;
 import com.learn.demo.mall.user.config.UserLoginConfig;
+import com.learn.demo.mall.user.dao.PointLogMapper;
 import com.learn.demo.mall.user.dao.UserMapper;
 import com.learn.demo.mall.user.enums.UserErrorCodeEnum;
+import com.learn.demo.mall.user.pojo.PointLogPO;
 import com.learn.demo.mall.user.pojo.UserPO;
 import com.learn.demo.mall.user.request.UserLoginReq;
 import com.learn.demo.mall.user.utils.CookieUtil;
@@ -15,6 +20,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -39,13 +45,16 @@ public class UserService {
     private UserMapper userMapper;
 
     @Resource
+    private PointLogMapper pointLogMapper;
+
+    @Resource
     private RestTemplate restTemplate;
 
     @Resource
-    private LoadBalancerClient loadBalancerClient;
+    private StringRedisTemplate stringRedisTemplate;
 
     @Resource
-    private StringRedisTemplate stringRedisTemplate;
+    private LoadBalancerClient loadBalancerClient;
 
     @Resource
     private UserLoginConfig userLoginConfig;
@@ -112,9 +121,47 @@ public class UserService {
         userMapper.deleteByPrimaryKey(username);
     }
 
-    public void updatePoints(String username, Integer points) {
+    public int updatePoints(String username, Integer points) {
         UserPO user = userMapper.selectByPrimaryKey(username);
         user.setPoints(user.getPoints() + points);
-        userMapper.updateByPrimaryKeySelective(user);
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Transactional
+    public int updatePointsByTask(TaskPO task) {
+        if (Objects.isNull(task) || org.apache.commons.lang.StringUtils.isEmpty(task.getRequestBody())) {
+            return 0;
+        }
+        AddPointsTask addPointsTask = JSON.parseObject(task.getRequestBody(), AddPointsTask.class);
+        // redis正在处理任务过滤
+        Object redisRecord = stringRedisTemplate.boundValueOps(String.valueOf(task.getId())).get();
+        if (Objects.nonNull(redisRecord)) {
+            return 0;
+        }
+        // mysql正在处理任务过滤
+        PointLogPO pointLog = pointLogMapper.selectByOrderId(addPointsTask.getOrderId());
+        if (Objects.nonNull(pointLog)) {
+            return 0;
+        }
+        // 1. 存到redis中（标记正在处理）
+        stringRedisTemplate.boundValueOps(String.valueOf(task.getId())).set(addPointsTask.getOrderId(), KeyConfigUtil.getTaskRedisExpire(), TimeUnit.SECONDS);
+        // 2. 修改用户积分
+        int result = updatePoints(addPointsTask.getUsername(), addPointsTask.getPoints());
+        if (result <= 0) {
+            return 0;
+        }
+        // 3. 记录积分日志（标记处理完成）
+        pointLog = PointLogPO.builder()
+                .userId(addPointsTask.getUsername())
+                .orderId(addPointsTask.getOrderId())
+                .point(addPointsTask.getPoints())
+                .build();
+        result = pointLogMapper.insertSelective(pointLog);
+        if (result <= 0) {
+            return 0;
+        }
+        // 4. 删除redis记录
+        stringRedisTemplate.delete(String.valueOf(task.getId()));
+        return result;
     }
 }

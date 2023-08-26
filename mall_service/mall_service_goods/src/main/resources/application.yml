@@ -40,5 +40,3 @@ resource:
     - /images/**
     - /js/**
     - /css/**
-    - /user/info/load/**
-    - /user/info/login

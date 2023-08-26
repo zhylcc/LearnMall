@@ -11,6 +11,7 @@ import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -39,7 +40,6 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
     @Resource
     private GatewayConfig gatewayConfig;
 
-    private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String AUTHORIZATION_VALUE_PREFIX = "Bearer ";
 
     @Override
@@ -77,7 +77,7 @@ public class AuthorizedFilter implements GlobalFilter, Ordered {
         // 获取redis中的jwt
         String jwt = this.getJwtFromRedis(jti);
         if (StringUtils.isNotBlank(jwt)) {
-            request.mutate().header(AUTHORIZATION_HEADER, AUTHORIZATION_VALUE_PREFIX+jwt);
+            request.mutate().header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_VALUE_PREFIX+jwt);
             log.info("授权信息设置成功，jti: " + jti);
             return chain.filter(exchange);
         }

@@ -65,6 +65,11 @@ spring:
           uri: lb://file
           predicates:
             - Path=/file/**
+        # 支付微服务
+        - id: pay
+          uri: lb://pay
+          predicates:
+            - Path=/pay/**
   redis:
     host: localhost
 
@@ -79,3 +84,4 @@ gateway:
     - /user/info/login
     - /user/info/load/**
     - /file/**
+    - /pay/**

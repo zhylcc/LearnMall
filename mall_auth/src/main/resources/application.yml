@@ -36,6 +36,5 @@ authentication:
     - /images/**
     - /js/**
     - /css/**
-    - /user/info/login
   authorities:
     - admin

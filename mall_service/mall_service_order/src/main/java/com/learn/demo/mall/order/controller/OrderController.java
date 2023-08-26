@@ -35,7 +35,7 @@ public class OrderController {
         }
         OrderPO order = new OrderPO();
         order.setUsername(username);
-        return Result.success(orderService.add(order));
+        return Result.success(orderService.apply(order));
     }
 
     @GetMapping("/{id}")

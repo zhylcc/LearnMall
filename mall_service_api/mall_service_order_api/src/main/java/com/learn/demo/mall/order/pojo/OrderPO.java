@@ -2,12 +2,13 @@ package com.learn.demo.mall.order.pojo;
 
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  *
@@ -59,32 +60,32 @@ public class OrderPO {
 	/**
 	 * 订单创建时间
 	 */
-	private LocalDateTime createTime;
+	private Date createTime;
 
 	/**
 	 * 订单更新时间
 	 */
-	private LocalDateTime updateTime;
+	private Date updateTime;
 
 	/**
 	 * 付款时间
 	 */
-	private LocalDateTime payTime;
+	private Date payTime;
 
 	/**
 	 * 发货时间
 	 */
-	private LocalDateTime consignTime;
+	private Date consignTime;
 
 	/**
 	 * 交易完成时间
 	 */
-	private LocalDateTime endTime;
+	private Date endTime;
 
 	/**
 	 * 交易关闭时间
 	 */
-	private LocalDateTime closeTime;
+	private Date closeTime;
 
 	/**
 	 * 物流名称

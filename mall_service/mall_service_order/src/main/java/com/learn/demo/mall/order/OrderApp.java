@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import tk.mybatis.spring.annotation.MapperScan;
 
 /**
@@ -14,7 +15,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @EnableEurekaClient
 @MapperScan(basePackages = {"com.learn.demo.mall.order.dao"})
-@EnableFeignClients(basePackages = {"com.learn.demo.mall.goods.feign", "com.learn.demo.mall.user.feign"})
+@EnableFeignClients(basePackages = {"com.learn.demo.mall.goods.feign", "com.learn.demo.mall.pay.feign"})
+@EnableScheduling
 @Slf4j
 public class OrderApp {
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * SKU管理
@@ -63,5 +64,16 @@ public class SkuController {
     @PutMapping("/reduce")
     public Result<Integer> reduce(@RequestParam String username) {
         return Result.success(skuService.reduce(username));
+    }
+
+    @PutMapping("/resume")
+    public Result<Integer> resume(@RequestParam String id, @RequestParam Integer num) {
+        if (Objects.isNull(id)) {
+            throw new BaseBizException("商品skuId不能为空", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
+        }
+        if (Objects.isNull(num) || num <= 0) {
+            throw new BaseBizException("库存增加数需要大于0", GoodsErrorCodeEnum.ARGUMENT_ILLEGAL);
+        }
+        return Result.success(skuService.resumeStock(id, num));
     }
 }

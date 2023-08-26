@@ -9,6 +9,8 @@ import com.learn.demo.mall.common.exception.ErrorCode;
 public enum OrderErrorCodeEnum implements ErrorCode {
     ARGUMENT_ILLEGAL(40000, "订单服务参数不合法"),
     GOODS_NOT_EXIST(40001, "购物车商品不存在"),
+    PAY_SERVICE_INTERFACE_EXCEPTION(40002, "支付服务接口异常"),
+    SKU_SERVICE_INTERFACE_EXCEPTION(40003, "商品sku接口异常"),
 
     ;
 

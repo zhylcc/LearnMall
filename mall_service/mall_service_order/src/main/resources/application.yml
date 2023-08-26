@@ -24,6 +24,8 @@ spring:
     allow-bean-definition-overriding: true  # 可能会出现相同名称的FeignClient，加上避免编译报错
   redis:
     host: localhost
+  rabbitmq:
+    host: localhost
 
 snowflake:
   datacenter-id: 2

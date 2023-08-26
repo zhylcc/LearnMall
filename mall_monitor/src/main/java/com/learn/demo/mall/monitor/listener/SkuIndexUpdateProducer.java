@@ -16,7 +16,7 @@ import java.util.Map;
  * @author zh_cr
  */
 @CanalEventListener
-public class SpuProducer {
+public class SkuIndexUpdateProducer {
 
     @Resource
     private RabbitTemplate rabbitTemplate;
@@ -25,7 +25,7 @@ public class SpuProducer {
     private static final String COL_ID = "id";
 
     @ListenPoint(schema = "mall_goods", table = "tb_spu")
-    public void spuMarketableChange(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
+    public void onSpuMarketableToggle(CanalEntry.EventType eventType, CanalEntry.RowData rowData) {
         // 更改之前的数据
         Map<String, String> oldData = new HashMap<>();
         rowData.getBeforeColumnsList().forEach(column -> oldData.put(column.getName(), column.getValue()));
@@ -36,12 +36,12 @@ public class SpuProducer {
         if (SpuMarketableRoutingKeyEnum.UP.getStatus().equals(Integer.valueOf(newData.get(COL_MARKETABLE)))
                 && SpuMarketableRoutingKeyEnum.DOWN.getStatus().equals(Integer.valueOf(oldData.get(COL_MARKETABLE)))) {
             // 上架
-            rabbitTemplate.convertAndSend(KeyConfigUtil.getSpuMarketableExchange(), SpuMarketableRoutingKeyEnum.UP.getKey(), newData.get(COL_ID));
+            rabbitTemplate.convertAndSend(KeyConfigUtil.SPU_MARKETABLE_EXCHANGE, KeyConfigUtil.INDEX_IMPORT_KEY, newData.get(COL_ID));
         }
         if (SpuMarketableRoutingKeyEnum.DOWN.getStatus().equals(Integer.valueOf(newData.get(COL_MARKETABLE)))
                 && SpuMarketableRoutingKeyEnum.UP.getStatus().equals(Integer.valueOf(oldData.get(COL_MARKETABLE)))) {
             // 下架
-            rabbitTemplate.convertAndSend(KeyConfigUtil.getSpuMarketableExchange(), SpuMarketableRoutingKeyEnum.DOWN.getKey(), newData.get(COL_ID));
+            rabbitTemplate.convertAndSend(KeyConfigUtil.SPU_MARKETABLE_EXCHANGE, KeyConfigUtil.INDEX_DELETE_KEY, newData.get(COL_ID));
         }
     }
 }

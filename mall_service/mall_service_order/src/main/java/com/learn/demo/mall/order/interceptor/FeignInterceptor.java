@@ -1,14 +1,16 @@
 package com.learn.demo.mall.order.interceptor;
 
+import com.learn.demo.mall.order.entity.NonWebRequestAttributes;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 import java.util.Objects;
 
 /**
@@ -26,15 +28,16 @@ public class FeignInterceptor implements RequestInterceptor {
         if (Objects.isNull(requestAttributes)) {
             return;
         }
-        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()){
-            String headerName = headerNames.nextElement();
-            if (AUTHORIZATION_HEADER.equalsIgnoreCase(headerName)){
-                String headerValue = request.getHeader(headerName); // Bearer jwt
-                //传递令牌
-                requestTemplate.header(headerName,headerValue);
-            }
+        String authorization = null;
+        if (requestAttributes instanceof ServletRequestAttributes) {
+            HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+            //传递令牌
+            authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        } else if (requestAttributes instanceof NonWebRequestAttributes) {
+            authorization = (String) requestAttributes.getAttribute(HttpHeaders.AUTHORIZATION, 0);
+        }
+        if (StringUtils.isNotBlank(authorization)) {
+            requestTemplate.header(AUTHORIZATION_HEADER, authorization);
         }
     }
 }

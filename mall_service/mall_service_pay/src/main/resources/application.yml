@@ -14,6 +14,8 @@ spring:
   devtools:
     livereload:
       port: 35735
+  rabbitmq:
+    host: localhost
 
 snowflake:
   datacenter-id: 5

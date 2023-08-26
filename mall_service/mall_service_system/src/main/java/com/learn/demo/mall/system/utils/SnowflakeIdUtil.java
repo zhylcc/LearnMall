@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("snowflake")
 public class SnowflakeIdUtil {
     // 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
-    private final static long TW_EPOCH = System.currentTimeMillis();
+    private final static long TW_EPOCH = 1693080597L;;
     // 机器标识位数
     private final static long WORKER_ID_BITS = 5L;
     // 数据中心标识位数

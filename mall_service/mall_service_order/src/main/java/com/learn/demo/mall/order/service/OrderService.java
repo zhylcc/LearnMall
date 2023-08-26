@@ -121,7 +121,7 @@ public class OrderService {
         // 清除购物车缓存
         redisTemplate.delete(CART_KEY_PREFIX + order.getUsername());
 
-        // 发送订单延迟消息
+        // 发送订单延迟消息（需要传递授权信息，否则消费方调用feign肯会401）
         MessagePostProcessor messagePostProcessor = message -> {
             message.getMessageProperties().setHeader(HttpHeaders.AUTHORIZATION, AuthorizationUtil.getAuthorizationHeader());
             return message;
@@ -162,23 +162,7 @@ public class OrderService {
         if (TradeStatusEnum.SUCCESS.getStatus().equals(orderResp.getTradeStatus())) {
             // 2.1 已支付，进行数据补偿
             // 修改订单为支付成功状态
-            order.setPayStatus(PayStatusEnum.SUCCESS.getValue());
-            order.setOrderStatus(OrderStatusEnum.COMPLETED.getValue());
-            order.setUpdateTime(new Date());
-            order.setPayTime(new Date());
-            order.setTransactionId(orderResp.getTransactionId());
-            orderMapper.updateByPrimaryKeySelective(order);
-            // 记录订单日志
-            OrderLogPO orderLog = OrderLogPO.builder()
-                    .id(String.valueOf(snowflakeIdUtil.nextId()))
-                    .operater("automatic")
-                    .operateTime(new Date())
-                    .orderStatus(OrderStatusEnum.COMPLETED.getValue())
-                    .payStatus(PayStatusEnum.SUCCESS.getValue())
-                    .remarks(orderResp.getTransactionId())
-                    .orderId(Long.valueOf(id))
-                    .build();
-            orderLogMapper.insert(orderLog);
+            updatePayStatus4Success(id, orderResp.getTransactionId());
         }
         else {
             // 2.2 未支付
@@ -207,4 +191,28 @@ public class OrderService {
         }
     }
 
+    @Transactional
+    public void updatePayStatus4Success(String orderId, String transactionId) {
+        OrderPO order = orderMapper.selectByPrimaryKey(orderId);
+        if (Objects.isNull(order) || !PayStatusEnum.PAYING.getValue().equals(order.getPayStatus())) {
+            return;
+        }
+        order.setPayStatus(PayStatusEnum.SUCCESS.getValue());
+        order.setOrderStatus(OrderStatusEnum.COMPLETED.getValue());
+        order.setUpdateTime(new Date());
+        order.setPayTime(new Date());
+        order.setTransactionId(transactionId);
+        orderMapper.updateByPrimaryKeySelective(order);
+        // 记录订单日志
+        OrderLogPO orderLog = OrderLogPO.builder()
+                .id(String.valueOf(snowflakeIdUtil.nextId()))
+                .operater("automatic")
+                .operateTime(new Date())
+                .orderStatus(OrderStatusEnum.COMPLETED.getValue())
+                .payStatus(PayStatusEnum.SUCCESS.getValue())
+                .remarks(transactionId)
+                .orderId(Long.valueOf(orderId))
+                .build();
+        orderLogMapper.insert(orderLog);
+    }
 }

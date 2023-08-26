@@ -80,6 +80,12 @@ public class KeyConfigUtil {
     public static final String ORDER_CREATE_QUEUE = "orderCreateQueue";
 
     /**
+     * 订单支付
+     */
+    public static final String ORDER_PAY_QUEUE = "orderPayQueue";
+
+
+    /**
      * 积分任务缓存过期时间，s
      */
     public static Long getTaskRedisExpire() {
@@ -105,7 +111,11 @@ public class KeyConfigUtil {
      * SUCCESS
      * NOT_PAY
      */
-    public static String getDefaultTradeStatus() {
+    public static String getTestTradeStatus() {
         return "SUCCESS";
+    }
+
+    public static String getTestOrderId() {
+        return "887976366080";
     }
 }

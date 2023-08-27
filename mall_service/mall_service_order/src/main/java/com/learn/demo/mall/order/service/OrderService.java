@@ -2,6 +2,7 @@ package com.learn.demo.mall.order.service;
 
 import com.alibaba.fastjson.JSON;
 import com.learn.demo.mall.common.entity.AddPointsTaskData;
+import com.learn.demo.mall.common.enums.BasicErrorCodeEnum;
 import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.response.Result;
 import com.learn.demo.mall.common.utils.KeyConfigUtil;
@@ -150,7 +151,10 @@ public class OrderService {
     public void checkAndCloseOrder(String id) throws Exception {
         // 1. 查询数据库当前订单状态
         OrderPO order = orderMapper.selectByPrimaryKey(id);
-        if (Objects.isNull(order) || !OrderStatusEnum.NOT_COMPLETED.getValue().equals(order.getOrderStatus())) {
+        if (Objects.isNull(order)) {
+            throw new BaseBizException("订单数据查询异常", BasicErrorCodeEnum.UNKNOWN_ERROR);
+        }
+        if (!OrderStatusEnum.NOT_COMPLETED.getValue().equals(order.getOrderStatus())) {
             return;
         }
         // 2. 从支付服务查询订单状态

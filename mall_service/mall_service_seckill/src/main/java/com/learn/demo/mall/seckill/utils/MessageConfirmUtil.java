@@ -44,7 +44,7 @@ public class MessageConfirmUtil implements RabbitTemplate.ConfirmCallback {
         if (ack) {
             // 1. 成功，删除redis缓存数据
             // 消息唯一标识
-            redisTemplate.delete(correlationData.getId());
+//            redisTemplate.delete(correlationData.getId());
             // 消息发送记录
             redisTemplate.delete(KeyConfigUtil.getSeckillConfirmKeyPrefix() + correlationData.getId());
         } else {
@@ -60,7 +60,7 @@ public class MessageConfirmUtil implements RabbitTemplate.ConfirmCallback {
     public void sendMessageWithConfirm(String exchange, String routingKey, String message) {
         // 缓存消息唯一标识
         String id = UUID.randomUUID().toString();
-        redisTemplate.boundValueOps(id).set(message);
+//        redisTemplate.boundValueOps(id).set(message);
 
         // 缓存消息发送数据
         MessageSendData sendData = MessageSendData.builder()

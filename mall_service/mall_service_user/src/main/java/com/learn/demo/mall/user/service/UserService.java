@@ -1,7 +1,7 @@
 package com.learn.demo.mall.user.service;
 
 import com.alibaba.fastjson.JSON;
-import com.learn.demo.mall.common.entity.AddPointsTask;
+import com.learn.demo.mall.common.entity.AddPointsTaskData;
 import com.learn.demo.mall.common.entity.AuthToken;
 import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.utils.KeyConfigUtil;
@@ -132,29 +132,29 @@ public class UserService {
         if (Objects.isNull(task) || org.apache.commons.lang.StringUtils.isEmpty(task.getRequestBody())) {
             return 0;
         }
-        AddPointsTask addPointsTask = JSON.parseObject(task.getRequestBody(), AddPointsTask.class);
+        AddPointsTaskData addPointsTaskData = JSON.parseObject(task.getRequestBody(), AddPointsTaskData.class);
         // redis正在处理任务过滤
         Object redisRecord = stringRedisTemplate.boundValueOps(String.valueOf(task.getId())).get();
         if (Objects.nonNull(redisRecord)) {
             return 0;
         }
         // mysql正在处理任务过滤
-        PointLogPO pointLog = pointLogMapper.selectByOrderId(addPointsTask.getOrderId());
+        PointLogPO pointLog = pointLogMapper.selectByOrderId(addPointsTaskData.getOrderId());
         if (Objects.nonNull(pointLog)) {
             return 0;
         }
         // 1. 存到redis中（标记正在处理）
-        stringRedisTemplate.boundValueOps(String.valueOf(task.getId())).set(addPointsTask.getOrderId(), KeyConfigUtil.getTaskRedisExpire(), TimeUnit.SECONDS);
+        stringRedisTemplate.boundValueOps(String.valueOf(task.getId())).set(addPointsTaskData.getOrderId(), KeyConfigUtil.getTaskRedisExpire(), TimeUnit.SECONDS);
         // 2. 修改用户积分
-        int result = updatePoints(addPointsTask.getUsername(), addPointsTask.getPoints());
+        int result = updatePoints(addPointsTaskData.getUsername(), addPointsTaskData.getPoints());
         if (result <= 0) {
             return 0;
         }
         // 3. 记录积分日志（标记处理完成）
         pointLog = PointLogPO.builder()
-                .userId(addPointsTask.getUsername())
-                .orderId(addPointsTask.getOrderId())
-                .point(addPointsTask.getPoints())
+                .userId(addPointsTaskData.getUsername())
+                .orderId(addPointsTaskData.getOrderId())
+                .point(addPointsTaskData.getPoints())
                 .build();
         result = pointLogMapper.insertSelective(pointLog);
         if (result <= 0) {

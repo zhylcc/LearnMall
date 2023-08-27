@@ -49,6 +49,55 @@ public class KeyConfigUtil {
     }
 
     /**
+     * 秒杀商品信息缓存key前缀
+     */
+    public static String getSeckillGoodsKeyPrefix() {
+        return "seckill_goods_";
+    }
+
+    /**
+     * 秒杀商品库存缓存key前缀
+     */
+    public static String getSeckillGoodsStockKeyPrefix() {
+        return "seckill_goods_stock_";
+    }
+
+    /**
+     * 秒杀下单消息confirm机制缓存key前缀
+     */
+    public static String getSeckillConfirmKeyPrefix() {
+        return "seckill_confirm_";
+    }
+
+    /**
+     * 秒杀下单用户同商品防重缓存key前缀
+     */
+    public static String getSeckillUserGoodsKeyPrefix() {
+        return "seckill_user_goods_";
+    }
+
+    /**
+     * 秒杀下单用户同商品防重缓存key有效时间，s
+     */
+    public static Long getSeckillUserGoodsKeyExpire() {
+        return 5L;
+    }
+
+    /**
+     * 秒杀下单接口隐藏随机码缓存key前缀，s
+     */
+    public static String getSeckillRandomKeyPrefix() {
+        return "seckill_random_";
+    }
+
+    /**
+     * 秒杀下单接口隐藏随机码缓存key有效时间，s
+     */
+    public static Long getSeckillRandomKeyExpire() {
+        return 60L;
+    }
+
+    /**
      * 系统管理微服务签发jwt的密钥
      */
     public static String getSystemJwtKey() {
@@ -83,6 +132,12 @@ public class KeyConfigUtil {
      * 订单支付
      */
     public static final String ORDER_PAY_QUEUE = "orderPayQueue";
+
+    /**
+     * 秒杀异步下单
+     */
+    public static final String SECKILL_ORDER_QUEUE = "seckillOrderQueue";
+
 
 
     /**

@@ -18,6 +18,7 @@
         <module>mall_service_order</module>
         <module>mall_service_file</module>
         <module>mall_service_pay</module>
+        <module>mall_service_seckill</module>
     </modules>
 
     <dependencies>

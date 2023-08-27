@@ -4,9 +4,6 @@ server:
 spring:
   application:
     name: canal
-  devtools:
-    livereload:
-      enabled: false
   # rabbitmq相关
   rabbitmq:
     host: localhost

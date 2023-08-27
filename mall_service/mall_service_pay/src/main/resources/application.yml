@@ -20,3 +20,11 @@ spring:
 snowflake:
   datacenter-id: 5
   worker-id: 1
+
+# 资源服务器配置
+resource:
+  key-location: key/public.key
+  white-list:
+    - /images/**
+    - /js/**
+    - /css/**

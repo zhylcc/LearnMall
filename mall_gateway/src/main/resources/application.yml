@@ -11,9 +11,6 @@ eureka:
 spring:
   application:
     name: gateway
-  devtools:
-    livereload:
-      enabled: false
   cloud:
     gateway:
       globalcors:  # 网关跨域请求配置（各微服务仍需单独配置）
@@ -70,6 +67,11 @@ spring:
           uri: lb://pay
           predicates:
             - Path=/pay/**
+        # 秒杀微服务
+        - id: seckill
+          uri: lb://seckill
+          predicates:
+            - Path=/seckill/**
   redis:
     host: localhost
 
@@ -84,4 +86,3 @@ gateway:
     - /user/info/login
     - /user/info/load/**
     - /file/**
-    - /pay/**

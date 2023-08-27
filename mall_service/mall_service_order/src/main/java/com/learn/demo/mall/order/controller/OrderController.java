@@ -1,12 +1,10 @@
 package com.learn.demo.mall.order.controller;
 
 import com.learn.demo.mall.common.response.Result;
-import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.order.pojo.OrderExtPO;
 import com.learn.demo.mall.order.pojo.OrderPO;
 import com.learn.demo.mall.order.service.OrderService;
-import com.learn.demo.mall.order.service.TokenDecodeService;
-import org.apache.commons.lang.StringUtils;
+import com.learn.demo.mall.order.utils.TokenDecodeUtil;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,17 +20,14 @@ import javax.annotation.Resource;
 public class OrderController {
 
     @Resource
-    private TokenDecodeService tokenDecodeService;
+    private TokenDecodeUtil tokenDecodeUtil;
 
     @Resource
     private OrderService orderService;
 
     @PostMapping("/apply")
     public Result<String> add() {
-        String username = KeyConfigUtil.getTestUsername();
-        if (StringUtils.isBlank(username)) {
-            username = tokenDecodeService.parseClaims().getUsername();
-        }
+        String username = tokenDecodeUtil.parseClaims().getUsername();
         OrderPO order = new OrderPO();
         order.setUsername(username);
         return Result.success(orderService.apply(order));

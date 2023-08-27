@@ -4,7 +4,7 @@ import com.learn.demo.mall.common.response.Result;
 import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.user.pojo.AddressPO;
 import com.learn.demo.mall.user.service.AddressService;
-import com.learn.demo.mall.user.service.TokenDecodeService;
+import com.learn.demo.mall.user.utils.TokenDecodeUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,14 +26,11 @@ public class AddressController {
     private AddressService addressService;
 
     @Resource
-    private TokenDecodeService tokenDecodeService;
+    private TokenDecodeUtil tokenDecodeUtil;
 
     @GetMapping
     public Result<List<AddressPO>> queryByUsername() {
-        String username = KeyConfigUtil.getTestUsername();
-        if (StringUtils.isBlank(username)) {
-            username = tokenDecodeService.parseClaims().getUsername();
-        }
+        String username = tokenDecodeUtil.parseClaims().getUsername();
         return Result.success(addressService.queryByUsername(username));
     }
 }

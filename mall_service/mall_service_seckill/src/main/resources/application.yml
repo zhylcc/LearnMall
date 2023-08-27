@@ -1,0 +1,41 @@
+server:
+  port: 9006
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6868/eureka/
+  instance:
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: seckill
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/mall_seckill?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: 123456
+  main:
+    allow-bean-definition-overriding: true
+  redis:
+    host: localhost
+  rabbitmq:
+    host: localhost
+    publisher-confirms: true  # 生产者confirm机制
+    listener:
+      simple:
+        acknowledge-mode: manual  # 消费者手动应答
+
+snowflake:
+  datacenter-id: 6
+  worker-id: 1
+
+# 资源服务器配置
+resource:
+  key-location: key/public.key
+  white-list:
+    - /images/**
+    - /js/**
+    - /css/**

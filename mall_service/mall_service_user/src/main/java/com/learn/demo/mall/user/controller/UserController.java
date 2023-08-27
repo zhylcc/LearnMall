@@ -6,7 +6,7 @@ import com.learn.demo.mall.common.utils.KeyConfigUtil;
 import com.learn.demo.mall.user.enums.UserErrorCodeEnum;
 import com.learn.demo.mall.user.pojo.UserPO;
 import com.learn.demo.mall.user.request.UserLoginReq;
-import com.learn.demo.mall.user.service.TokenDecodeService;
+import com.learn.demo.mall.user.utils.TokenDecodeUtil;
 import com.learn.demo.mall.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -31,7 +31,7 @@ public class UserController {
     private UserService userService;
 
     @Resource
-    private TokenDecodeService tokenDecodeService;
+    private TokenDecodeUtil tokenDecodeUtil;
 
     @PostMapping("/login")
     public void login(@RequestBody UserLoginReq req, HttpServletResponse response) throws IOException {
@@ -70,10 +70,7 @@ public class UserController {
 
     @PutMapping("/points/{points}")
     public Result<Void> updatePoints(@PathVariable Integer points) {
-        String username = KeyConfigUtil.getTestUsername();
-        if (StringUtils.isBlank(username)) {
-            username = tokenDecodeService.parseClaims().getUsername();
-        }
+        String username = tokenDecodeUtil.parseClaims().getUsername();
         userService.updatePoints(username, points);
         return Result.success();
     }

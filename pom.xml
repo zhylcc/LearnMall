@@ -17,7 +17,6 @@
         <module>mall_auth</module>
         <module>mall_gateway</module>
         <module>mall_monitor</module>
-        <module>mall_web</module>
     </modules>
 
     <properties>
@@ -49,11 +48,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <scope>compile</scope>
-        </dependency>
-<!--        热部署使用-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
         </dependency>
     </dependencies>
 

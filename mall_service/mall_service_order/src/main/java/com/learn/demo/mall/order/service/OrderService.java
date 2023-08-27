@@ -1,7 +1,7 @@
 package com.learn.demo.mall.order.service;
 
 import com.alibaba.fastjson.JSON;
-import com.learn.demo.mall.common.entity.AddPointsTask;
+import com.learn.demo.mall.common.entity.AddPointsTaskData;
 import com.learn.demo.mall.common.exception.BaseBizException;
 import com.learn.demo.mall.common.response.Result;
 import com.learn.demo.mall.common.utils.KeyConfigUtil;
@@ -103,7 +103,7 @@ public class OrderService {
 
         // 增加积分（基于消息队列实现分布式事务）
 //        userFeign.updatePoints(order.getTotalMoney());
-        AddPointsTask taskData = AddPointsTask.builder()
+        AddPointsTaskData taskData = AddPointsTaskData.builder()
                 .username(order.getUsername())
                 .orderId(order.getId())
                 .points(order.getTotalMoney())

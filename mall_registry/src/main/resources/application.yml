@@ -11,6 +11,3 @@ eureka:
 spring:
   application:
     name: eureka
-  devtools:
-    livereload:
-      enabled: false

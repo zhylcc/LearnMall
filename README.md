@@ -19,7 +19,7 @@ https://documenter.getpostman.com/view/17613275/2s9Y5YR2Pa
 ![项目结构图](/assets/images/项目结构图.jpg)
 
 ## 功能实现
-### CAS单点登录
+### 单点登录
 1. 授权服务器使用私钥签发令牌。
 2. 网关过滤请求，添加授权请求头。
 3. 资源服务器使用公钥解析并验证授权信息。
